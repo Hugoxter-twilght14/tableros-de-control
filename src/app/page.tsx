@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button"
+import { Navbar } from "@/components/shared/Navbar";
 
 export default function Home() {
   return (
-    <div>
-      <Button>Click me</Button>
+    <div className="relative bg-[#2b2b2b]">
+      <Navbar/>
     </div>
   )
 }
