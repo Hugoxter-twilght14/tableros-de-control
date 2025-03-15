@@ -7,14 +7,14 @@ export const itemsNavbar =[
     },
     {
         name: "Politicas",
-        link: "/politicas",
+        link: "https://inelacmx.com/nuestra-esencia/politicas/",
     },
     {
-        name: "Contactanos",
-        link: "/contactanos",
+        name: "Uso y privacidad",
+        link: "/uso_privacidad",
     },
     {
-        name: "Ayuda",
-        link: "/ayuda",
+        name: "Contacto",
+        link: "https://inelacmx.com/contacto/",
     },
 ];
