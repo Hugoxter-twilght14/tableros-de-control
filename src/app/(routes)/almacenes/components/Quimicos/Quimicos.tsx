@@ -31,29 +31,20 @@ export function Quimicos() {
       {/* Menú circular alrededor del botón principal */}
       {showMenu && (
         <div className="absolute flex flex-col gap-3 right-[-115px] md:right-[-130px] lg:right-[-150px] top-9">
-          {/* Botón 1: Dar Alta */}
-          <button
-            className="bg-[#0D0A62] text-white text-xs md:text-sm px-3 py-2 rounded-full shadow-lg 
-            transition-all duration-300 cursor-pointer hover:bg-blue-500 border-white border-2"
-            onClick={() => handleNavigation("/dar-alta")}
-          >
-            ➕ Dar Alta
-          </button>
-
-          {/* Botón 2: Lista de Químicos */}
+          {/* Botón 1: Gestion de inventario */}
           <button
             className="bg-[#0D0A62] text-white text-xs md:text-sm px-3 py-2 rounded-full shadow-lg transition-all 
             duration-300 cursor-pointer hover:bg-blue-500 border-white border-2"
-            onClick={() => handleNavigation("/listado-productos")}
+            onClick={() => handleNavigation("/gestion_inventario_quimicos")}
           >
-            📦 Lista de Químicos
+            📦 Gestión de inventario
           </button>
 
           {/* Botón 3: Dashboard */}
           <button
             className="bg-[#0D0A62] text-white text-xs md:text-sm px-3 py-2 rounded-full shadow-lg 
             transition-all duration-300 cursor-pointer hover:bg-blue-500 border-white border-2"
-            onClick={() => handleNavigation("/dashboard")}
+            onClick={() => handleNavigation("/dashboard_quimicos")}
           >
             📊 Dashboard
           </button>

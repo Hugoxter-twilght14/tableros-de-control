@@ -31,29 +31,20 @@ export function Refacciones() {
       {/* Menú circular alrededor del botón principal */}
       {showMenu && (
         <div className="absolute flex flex-col gap-3 left-[-105px] md:left-[-130px] lg:left-[-150px] top-9">
-          {/* Botón 1: Dar Alta */}
+          {/* Botón 1: Gestion de inventario */}
           <button
             className="bg-[#0D0A62] text-white text-xs md:text-sm px-3 py-2 rounded-full shadow-lg 
             transition-all duration-300 cursor-pointer hover:bg-blue-500 border-white border-2"
-            onClick={() => handleNavigation("/dar-alta")}
+            onClick={() => handleNavigation("/gestion_inventario_refacciones")}
           >
-            ➕ Dar Alta
-          </button>
-
-          {/* Botón 2: Lista de Refacciones */}
-          <button
-            className="bg-[#0D0A62] text-white text-xs md:text-sm px-3 py-2 rounded-full shadow-lg 
-            transition-all duration-300 cursor-pointer hover:bg-blue-500 border-white border-2"
-            onClick={() => handleNavigation("/listado-productos")}
-          >
-            📦 Lista de Refacciones
+            📦 Gestion de inventario
           </button>
 
           {/* Botón 3: Dashboard */}
           <button
             className="bg-[#0D0A62] text-white text-xs md:text-sm px-3 py-2 rounded-full shadow-lg
             transition-all duration-300 cursor-pointer hover:bg-blue-500 border-white border-2"
-            onClick={() => handleNavigation("/dashboard")}
+            onClick={() => handleNavigation("/dashboard_refacciones")}
           >
             📊 Dashboard
           </button>
