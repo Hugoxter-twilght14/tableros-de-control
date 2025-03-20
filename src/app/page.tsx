@@ -1,4 +1,5 @@
-import { Navbar } from "@/components/shared/Navbar";
+"use client";
+import { Navbar } from "./(routes)/(home)/components/Navbar";
 import { GestionAlmacen } from "./(routes)/(home)/components/GestionAlmacen";
 import { HistorialMovimiento } from "./(routes)/(home)/components/HistorialMovimiento";
 import { ControlUsuarios } from "./(routes)/(home)/components/ControlUsuarios";

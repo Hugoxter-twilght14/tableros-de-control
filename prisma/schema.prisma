@@ -19,7 +19,7 @@ model usuario {
   id    Int    @id @default(autoincrement())
   nombre String?
   correo String?
-  rol    Boolean[]
+  rol    Int[]
   telefono Int?
   password String?
   repitPassword String?
