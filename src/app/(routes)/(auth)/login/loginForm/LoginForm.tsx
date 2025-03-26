@@ -75,7 +75,7 @@ export function LoginForm() {
                 <FormControl>
                   <Input placeholder="Escribe tu contraseña" {...field} type="password" className="h-10 text-black border-[#20232d]" />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className="text-black">
                   * campos obligatorios.
                 </FormDescription>
                 <FormMessage />

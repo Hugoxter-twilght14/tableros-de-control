@@ -1,5 +1,6 @@
 "use client";
 import { Navbar } from "@/components/shared/Navbar";
+import PorBodega from "./components/PorBodega/PorBodega";
 
 export default function pag() {
   return (
@@ -12,6 +13,10 @@ export default function pag() {
         <h1 className="text-white text-xl md:text-3xl lg:text-4xl font-bold text-center">
           VISTA DE DASHBOARD DE REFACCIONES
         </h1>
+        <div className="flex justify-center">
+            <PorBodega/>
+        </div>
+
       </div>
     </div>
   );

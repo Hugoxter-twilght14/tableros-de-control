@@ -21,7 +21,7 @@ export default async function page() {
         </div>
         <div className='mt-4 flex gap-1'>
             <label className='text-[#20232d] opacity-70'>¿Todavía no tienes cuenta?</label>
-            <Link href="/register" className='opacity-1 text-[#20232d]'>
+            <Link href="/register" className='hover:underline hover:opacity-70 text-[#20232d]'>
                 Creala aquí
             </Link>
         </div>
