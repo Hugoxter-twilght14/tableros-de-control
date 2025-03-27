@@ -40,11 +40,10 @@ export function LoginForm() {
       setError(data?.error)
   
       if (data?.success && data.redirectTo) {
-        toast({
-          title: "Inicio de sesión exitoso",
-        })
-        router.push(data.redirectTo)
-      }
+        toast({ title: "Inicio de sesión exitoso" });
+        router.push(data.redirectTo);
+        router.refresh(); // <-- Esto forzará la recarga del estado de sesión
+      }      
     } catch (error) {
       console.error(error)
     }

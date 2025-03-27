@@ -9,6 +9,7 @@ import { BellRing, Menu, Search } from "lucide-react";
 import { itemsNavbar } from "@/data/itemsNavbar";
 import Link from "next/link";
 import { Logo } from "../../Logo";
+import { UserProfileCard } from "../../UserProfileCard"// ajusta la ruta si es necesario
 
 export function NavbarMobile() {
   return (
@@ -33,9 +34,9 @@ export function NavbarMobile() {
    <div className="border-[1px] border-white/70 my-5"/>
    <div className="flex justify-between gap-6 mt-4 ml-4">
     <BellRing className="cursor-pointer  hover:text-green-700"/>
-    
-    <p className="mx-[8px]">Perfil de usuario</p>
-
+    <div className="mx-5">
+    <UserProfileCard />
+    </div>
    </div>
 
    <div className="flex justify-center mt-35">

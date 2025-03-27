@@ -1,6 +1,7 @@
-import { auth } from "../../auth"
+// lib/auth.ts
+import { auth } from "../../auth";
 
-export const currentUser = async() => {
-    const session = await auth()
-    return session?.user;
+export const currentUser = async () => {
+  const session = await auth();
+  return session?.user;
 };

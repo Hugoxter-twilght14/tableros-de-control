@@ -5,6 +5,7 @@ import React from 'react'
 import { itemsNavbar } from '@/data/itemsNavbar'
 import Link from 'next/link'
 import { useScrollPosition } from '@/hooks/useScrollPosition'
+import { UserProfileCard } from "../../UserProfileCard"
 
 
 export function NavbarDesktop() {
@@ -29,10 +30,7 @@ export function NavbarDesktop() {
                 </div>
                 <div className='flex gap-4 items-center'>
                     <BellRing className='cursor-pointer'/>
-                    <div className='flex gap-2 items-center'>
-                        {/*TOOD: ADD USER PROFILE*/}
-                        <p>Perfil usuario</p>
-                    </div>
+                    <UserProfileCard />
                 </div>
             </div>
         </div>
