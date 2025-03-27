@@ -9,7 +9,7 @@ export default function AuthLayout({
         <div className="bg-[url('/inelac_fondo_login.jpg')] h-full opacity-40 bg-no-repeat bg-cover bg-center"/>
       </div>
       <div className="flex lg:justify-start justify-center items-center h-full w-full pl-4 pr-8 py-5">
-        <div className="ml-6 bg-[#ffffff] px-6 md:px-8 py-6 md:py-8 rounded-2xl shadow-lg max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+      <div className="ml-6 bg-[#ffffff] px-6 md:px-8 py-6 md:py-8 mt-15 rounded-2xl shadow-lg max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
           {children}
         </div>
       </div>

@@ -1,23 +1,22 @@
 import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { db } from "./src/lib/db"
-//import authConfig from "./auth.config"
- 
-/*export const { handlers, signIn, signOut, auth } = NextAuth({
-    adapter: PrismaAdapter(db),
-    callbacks: {
-        async session({token, session}){
-            if(token.sub && session.user){
-                session.user.id = token.sub
-            }
+import { db } from "@/lib/db"
 
-            return session;
-        },
-        async jwt({token}){
-            return token;
-        }
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  adapter: PrismaAdapter(db),
+  providers: [], // aquí van tus providers como Credentials, etc.
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user && user.rol) {
+        token.rol = user.rol
+      }
+      return token
     },
-    session: {strategy:"jwt"},
-    ...authConfig,
-});
-*/
+    async session({ session, token }) {
+      if (session.user && token.rol) {
+        session.user.rol = token.rol as string
+      }
+      return session
+    },
+  }
+})

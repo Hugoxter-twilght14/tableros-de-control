@@ -1,32 +1,41 @@
-import bcrypt from 'bcryptjs';
-import { NextResponse } from 'next/server';
-
-import { db } from '@/lib/db';
-import { getUserByEmail } from '@/data/user';
+// src/app/api/auth/register/route.ts
+import { NextResponse } from "next/server"
+import bcrypt from "bcryptjs"
+import { db } from "@/lib/db"
 
 export async function POST(request: Request) {
-    const{email, password} = await request.json();
+  try {
+    const {
+      nombre,
+      correo,
+      imagen,
+      rol,
+      telefono,
+      password
+    } = await request.json()
 
+    const existingUser = await db.usuario.findUnique({ where: { correo } })
 
-    try{
-        const hashedPassword = await bcrypt.hash(password,10)
-        const existingUser = await getUserByEmail(email);
-
-        if(existingUser){
-            return new NextResponse("El correo ya existe",{status: 400});
-        }
-
-        /*const userCreated = await db.user.create({
-            data:{
-                email,
-                password: hashedPassword,
-            }
-        });*/
-
-       // return NextResponse.json(userCreated);
-
-    } catch (error){
-        console.log(error);
-        return new NextResponse("INTERNAL ERROR", {status: 500});
+    if (existingUser) {
+      return new NextResponse("El correo ya existe", { status: 400 })
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const userCreated = await db.usuario.create({
+      data: {
+        nombre,
+        correo,
+        imagen,
+        rol,
+        telefono,
+        password: hashedPassword,
+      },
+    })
+
+    return NextResponse.json(userCreated)
+  } catch (error) {
+    console.error(error)
+    return new NextResponse("INTERNAL ERROR", { status: 500 })
+  }
 }

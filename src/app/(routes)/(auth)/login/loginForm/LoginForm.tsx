@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input"
 import { formSchema } from "./LoginForm.form"
 import { useState } from "react"
 import FormError from "./formError/FormError"
-//import { login } from "@/actions/login"
+import { login } from "../../../../../../actions/login"
 import { toast } from "../../../../../hooks/use-toast"
 import { useRouter } from "next/navigation"
 
@@ -28,34 +28,36 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        email: "",
+        correo: "",
         password:"",
       },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-      /*try {
-        login(values).then((data) => {
-          setError(data?.error)
-          if(data?.success){
-            toast({
-              title: "Inicio de sesión exitosó",
-            });
-          }
-          router.push("/profiles");
-        });
-      } catch (error) {
-        console.log(error);
-      }*/
-  };
+    try {
+      const data = await login(values)
+  
+      setError(data?.error)
+  
+      if (data?.success && data.redirectTo) {
+        toast({
+          title: "Inicio de sesión exitoso",
+        })
+        router.push(data.redirectTo)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
 
   return (
       <Form {...form}>
-        <form //onSubmit={form.handleSubmit(onSubmit)}//
+        <form onSubmit={form.handleSubmit(onSubmit)}
          className="w-full gap-3 flex flex-col">
           <FormField
             control={form.control}
-            name="email"
+            name="correo"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[#20232d] lg:text-left text-center">Email*</FormLabel>
