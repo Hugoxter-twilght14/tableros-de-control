@@ -2,8 +2,6 @@ import { Navbar } from "./components/Navbar"
 import { auth } from "../../../../auth"
 import { redirect } from "next/navigation"
 import { ControlUsuariosClient } from "./components/ControlUsuariosClient"
-import { ButtonRegresar } from "./components/ButtonRegresar"
-import { BotonNuevoUsuario } from "./components/BotonNuevoUsuario"
 
 export default async function page() {
   const session = await auth()

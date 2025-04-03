@@ -1,8 +1,6 @@
 import { Navbar } from "@/components/shared/Navbar"
 import { auth } from "../../../../../auth"
 import { redirect } from "next/navigation"
-import { ButtonRegresar } from "./components/ButtonRegresar"
-import { BotonNuevaRefaccion } from "./components/BotonNuevaRefaccion"
 import { ControlRefaccionesClient } from "./components/ControlRefaccionesClient"
 
 export default async function page() {
