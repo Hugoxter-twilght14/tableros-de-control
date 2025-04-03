@@ -16,7 +16,12 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
 
-export function TablaUsuarios({ refrescar }: { refrescar?: boolean }) {
+
+interface Props {
+  refrescar?: number
+}
+
+export function TablaUsuarios({ refrescar }: Props) {
   const [usuarios, setUsuarios] = useState([])
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<{ id: number; nombre: string } | null>(null)
 
@@ -51,62 +56,65 @@ export function TablaUsuarios({ refrescar }: { refrescar?: boolean }) {
   }, [refrescar])
 
   return (
-    <div className="overflow-x-auto mt-6">
-      <table className="min-w-full text-sm border-collapse bg-white rounded-lg shadow-md overflow-hidden">
-        <thead className="bg-[#1e3a5f] text-white">
-          <tr>
-            <th className="p-3 text-left">Nombre</th>
-            <th className="p-3 text-left">Correo</th>
-            <th className="p-3 text-left">Rol</th>
-            <th className="p-3 text-left">Teléfono</th>
-            <th className="p-3 text-left">Registrado</th>
-            <th className="p-3 text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usuarios.map((user: any) => (
-            <tr key={user.id} className="border-b bg-[#424242] hover:bg-gray-400 hover:text-black transition">
-              <td className="p-3">{user.nombre}</td>
-              <td className="p-3">{user.correo}</td>
-              <td className="p-3">{user.rol}</td>
-              <td className="p-3">{user.telefono || "-"}</td>
-              <td className="p-3">{new Date(user.createdAt).toLocaleString()}</td>
-              <td className="p-3 text-center">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <button
-                      onClick={() => setUsuarioSeleccionado({ id: user.id, nombre: user.nombre })}
-                      className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+    <div className="mt-6 bg-white rounded-lg shadow overflow-hidden max-w-full">
+      {/* Encabezado */}
+      <div className="grid grid-cols-6 bg-[#1e3a5f] text-white font-semibold text-sm p-3 sticky top-0 z-10">
+        <div>Nombre</div>
+        <div>Correo</div>
+        <div>Rol</div>
+        <div>Teléfono</div>
+        <div>Registrado</div>
+        <div className="text-center">Acciones</div>
+      </div>
+  
+      {/* Cuerpo con scroll */}
+      <div className="overflow-y-auto divide-y divide-gray-300" style={{ maxHeight: 'calc(100vh - 300px)' }}>
+      {usuarios.map((user: any) => (
+          <div
+            key={user.id}
+            className="grid grid-cols-6 p-3 text-sm bg-[#424242] text-white hover:bg-gray-400 hover:text-black transition"
+          >
+            <div>{user.nombre}</div>
+            <div>{user.correo}</div>
+            <div>{user.rol}</div>
+            <div>{user.telefono || '-'}</div>
+            <div>{new Date(user.createdAt).toLocaleString()}</div>
+            <div className="text-center">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    onClick={() => setUsuarioSeleccionado({ id: user.id, nombre: user.nombre })}
+                    className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+                  >
+                    Eliminar
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Estás a punto de eliminar al usuario <strong>{usuarioSeleccionado?.nombre}</strong>. Esta acción no se puede revertir.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="hover:bg-white hover:text-black transition-all">Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        if (usuarioSeleccionado)
+                          eliminarUsuario(usuarioSeleccionado.id, usuarioSeleccionado.nombre)
+                      }}
+                      className="bg-red-500 hover:bg-red-700"
                     >
-                      Eliminar
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Estás a punto de eliminar al usuario <strong>{usuarioSeleccionado?.nombre}</strong>. Esta acción no se puede revertir.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel className="hover:bg-white hover:text-black transition-all">Cancelar</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => {
-                          if (usuarioSeleccionado)
-                            eliminarUsuario(usuarioSeleccionado.id, usuarioSeleccionado.nombre)
-                        }}
-                        className="bg-red-500 hover:bg-red-700"
-                      >
-                        Sí, eliminar
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                      Sí, eliminar
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
+  
 }
