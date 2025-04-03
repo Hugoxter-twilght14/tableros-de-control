@@ -15,7 +15,7 @@ export default async function page() {
     <div className="relative bg-[#2b2b2b] min-h-screen overflow-hidden">
       <Navbar />
       <div className="mt-16 px-4">
-        <h1 className="text-white text-3xl font-bold text-center">VISTA DE CONTROL DE USUARIOS</h1>
+        <h1 className="text-white text-3xl font-bold text-center">CONTROL DE USUARIOS</h1>
         <ControlUsuariosClient />
       </div>
       {/* Botón de regresar */}

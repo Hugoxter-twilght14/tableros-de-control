@@ -19,12 +19,6 @@ export default async function page() {
                 ¿Olvidaste tu contraseña?
             </Link>
         </div>
-        <div className='mt-4 flex gap-1'>
-            <label className='text-[#20232d] opacity-70'>¿Todavía no tienes cuenta?</label>
-            <Link href="/register" className='hover:underline hover:opacity-70 text-[#20232d]'>
-                Creala aquí
-            </Link>
-        </div>
         <div className='items-center space-x-2 mt-4 text-center'>
             <Checkbox id='terms' className='border-[#20232d] items-center'/>
             <label className=" text-[#20232d] peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-center">

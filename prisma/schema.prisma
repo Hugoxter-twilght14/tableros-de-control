@@ -21,16 +21,64 @@ enum Rol {
 }
 
 model usuario {
-  id            Int   @id @default(autoincrement())
-  nombre        String?
-  correo        String @unique
-  imagen        String?
-  rol           Rol
-  telefono      String?
-  password      String
+  id             Int                @id @default(autoincrement())
+  nombre         String?
+  correo         String             @unique
+  imagen         String?
+  rol            Rol
+  telefono       String?
+  password       String
   emailVerified  DateTime? 
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  reportesL3     refacciones_l3[]   @relation("UsuarioReportado")
 }
 
+model refacciones_l3 {
+  codigo             Int           @id
+  descripcion        String        @db.VarChar(80)
+  noParte            String        @db.VarChar(50)
+  existenciaFisica   Int
+  existenciaSistema  Int
+  diferencias        Int
+  proveedores        String        @db.VarChar(80)
+  cantidadEntrada    Int?
+  cantidadSalida     Int?
+  cantidad           Int?
+  fechaIngreso       DateTime
+  movimiento         Movimiento
+  fechaVencimiento   DateTime
+
+  unidadMedidaId     Unidad_medida
+  
+
+  ubicacionId        Int
+  ubicacion          ubicacion     @relation(fields: [ubicacionId], references: [id])
+
+  reportadoPorId     Int
+  usuarioReportado   usuario       @relation("UsuarioReportado", fields: [reportadoPorId], references: [id])
+}
+
+enum Movimiento {
+  ENTRADA
+  SALIDA
+  NUEVO_INGRESO
+  AJUSTE
+}
+
+enum Unidad_medida{
+  KG
+  LTS
+  PZ
+  MTS
+}
+
+model ubicacion {
+  id          Int              @id @default(autoincrement())
+  rack        Int
+  posicion    String           @db.VarChar(20)
+  fila        String           @db.VarChar(20)
+
+  refacciones refacciones_l3[]
+}

@@ -1,6 +1,7 @@
 import { auth } from "../../../../auth";
 import { redirect } from "next/navigation";
 import { Navbar } from "./components/Navbar";
+import { ButtonRegresar } from "./components/ButtonRegresar";
 
 export default async function page() {
   const session = await auth();
@@ -18,8 +19,12 @@ export default async function page() {
       {/* Título con margen adaptativo */}
       <div className="mt-16 md:mt-24 lg:mt-32 mb-8 px-4">
         <h1 className="text-white text-xl md:text-3xl lg:text-4xl font-bold text-center">
-          VISTA DE HISTORIAL DE MOVIMIENTOS
+          PANEL DE HISTORIAL DE MOVIMIENTOS
         </h1>
+      </div>
+      {/* Botón de regresar */}
+      <div className="flex justify-center mt-10">
+        <ButtonRegresar/>
       </div>
     </div>
   );

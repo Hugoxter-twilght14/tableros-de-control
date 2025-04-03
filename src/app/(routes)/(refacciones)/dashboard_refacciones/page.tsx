@@ -1,8 +1,16 @@
-"use client";
 import { Navbar } from "@/components/shared/Navbar";
 import PorBodega from "./components/PorBodega/PorBodega";
+import { auth } from "../../../../../auth";
+import { redirect } from "next/navigation";
 
-export default function pag() {
+export default async function page() {
+
+  const session = await auth()
+  
+    if (!session || !session.user) {
+      redirect("/login")
+    }
+
   return (
     <div className="relative bg-[#2b2b2b] min-h-screen overflow-hidden">
       {/* Navbar */}
