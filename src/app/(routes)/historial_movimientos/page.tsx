@@ -1,7 +1,15 @@
-"use client";
+import { auth } from "../../../../auth";
+import { redirect } from "next/navigation";
 import { Navbar } from "./components/Navbar";
 
-export default function page() {
+export default async function page() {
+  const session = await auth();
+
+  // Si no hay sesión, redirige al login
+  if (!session || !session.user) {
+    redirect("/login");
+  }
+  
   return (
     <div className="relative bg-[#2b2b2b] min-h-screen overflow-hidden">
       {/* Navbar */}

@@ -8,6 +8,7 @@ import { BellRing, Menu, Search } from "lucide-react";
 import { itemsNavbar } from "@/data/itemsNavbar";
 import Link from "next/link";
 import { Logo } from "@/components/shared/Logo";
+import { UserProfileCard } from "@/components/shared/UserProfileCard"
 
 export function NavbarMobile() {
   return (
@@ -30,11 +31,9 @@ export function NavbarMobile() {
 
      {/*Creación de iconos search y notifications de la barra de navegación de PC a telefono */}
    <div className="border-[1px] border-white/70 my-5"/>
-   <div className="flex justify-between gap-6 mt-4 ml-4">
-    
-    <p className="mx-[8px]">Perfil de usuario</p>
-
-   </div>
+   <div className="mx-2 cursor-pointer">
+      <UserProfileCard />
+    </div>
 
    <div className="flex justify-center mt-35">
    <Logo/>

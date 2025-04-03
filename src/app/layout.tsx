@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { AuthSessionProvider } from "@/components/providers/session-provider"; // 👈 importa el provider
+import { AuthSessionProvider } from "@/components/providers/session-provider"; // importa el provider
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <AuthSessionProvider>
           {children}
+          <Toaster />
         </AuthSessionProvider>
       </body>
     </html>

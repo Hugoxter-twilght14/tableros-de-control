@@ -5,6 +5,7 @@ import React from 'react'
 import { itemsNavbar } from '@/data/itemsNavbar'
 import Link from 'next/link'
 import { useScrollPosition } from '@/hooks/useScrollPosition'
+import { UserProfileCard } from "@/components/shared/UserProfileCard"
 
 
 export function NavbarDesktop() {
@@ -29,8 +30,7 @@ export function NavbarDesktop() {
                 </div>
                 <div className='flex gap-4 items-center'>
                     <div className='flex gap-2 items-center'>
-                        {/*TOOD: ADD USER PROFILE*/}
-                        <p>Perfil usuario</p>
+                        <UserProfileCard />
                     </div>
                 </div>
             </div>

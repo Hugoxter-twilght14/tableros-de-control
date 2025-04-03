@@ -5,7 +5,7 @@ export function GestionAlmacen() {
   const router = useRouter();
 
   const handleNavigation = () => {
-    router.push("/almacenes");
+    router.push("/gestion_almacen");
   };
 
   return (

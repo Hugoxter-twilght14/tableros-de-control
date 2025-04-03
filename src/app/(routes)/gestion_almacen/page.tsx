@@ -1,13 +1,18 @@
-"use client"
-import React from 'react'
 import { Refacciones } from './components/Refacciones'
 import { Quimicos } from './components/Quimicos'
 import { Navbar } from "@/components/shared/Navbar";
-import { useRouter } from "next/navigation";
+import { auth } from "../../../../auth";
+import { redirect } from "next/navigation";
+import { ButtonRegresar } from './components/ButtonRegresar';
 
-export default function Page() {
+export default async function Page() {
+
+  const session = await auth();
   
-  const router = useRouter();
+    // Si no hay sesión, redirige al login
+    if (!session || !session.user) {
+      redirect("/login");
+    }
 
   return (
     <div className="relative bg-[#2b2b2b] min-h-screen overflow-hidden">
@@ -26,12 +31,7 @@ export default function Page() {
       </div>
        {/* Botón de regresar */}
        <div className="flex justify-center mt-10">
-        <button
-          onClick={() => router.back()} // Redirige a la página anterior
-          className="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-400 transition duration-300"
-        >
-          Regresar
-        </button>
+        <ButtonRegresar/>
       </div>
     </div>
   );
