@@ -14,6 +14,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
+import { Delete, Trash } from "lucide-react"
 
 interface Props {
   refrescar?: number
@@ -113,7 +114,7 @@ export function TablaRefacciones({ refrescar }: Props) {
                           setRefaccionSeleccionada({ codigo: item.codigo, descripcion: item.descripcion })}
                         className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
                       >
-                        Eliminar
+                        <Trash/>
                       </button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
