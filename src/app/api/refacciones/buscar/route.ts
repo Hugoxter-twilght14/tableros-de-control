@@ -9,20 +9,24 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const queryLower = query.toLowerCase()
-
-    const resultados = await db.refacciones_l3.findMany({
+    const posibles = await db.refacciones_l3.findMany({
       where: {
-        OR: [
-          { codigo: { equals: parseInt(query) || 0 } },
-          { descripcion: { contains: queryLower } },
-          { noParte: { contains: queryLower } },
-        ],
+        codigo: {
+          gte: parseInt(query), // Mayor o igual al código que comienza con query
+        },
       },
       orderBy: { fechaIngreso: "desc" },
+      include: {
+        ubicacion: true,
+        usuarioReportado: true,
+      },
     })
 
-    return NextResponse.json(resultados)
+    const filtrados = posibles.filter((item) =>
+      item.codigo.toString().startsWith(query)
+    )
+
+    return NextResponse.json(filtrados)
   } catch (error) {
     console.error("Error al buscar refacciones:", error)
     return new NextResponse("INTERNAL ERROR", { status: 500 })

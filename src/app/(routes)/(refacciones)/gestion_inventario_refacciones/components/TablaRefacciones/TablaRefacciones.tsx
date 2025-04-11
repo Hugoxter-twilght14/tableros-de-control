@@ -14,15 +14,18 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
-import { Delete, Trash } from "lucide-react"
+import { Trash } from "lucide-react"
 
 interface Props {
   refrescar?: number
+  datosFiltrados?: any[] | null
+  busquedaActiva: string
 }
 
-export function TablaRefacciones({ refrescar }: Props) {
+export function TablaRefacciones({ refrescar = 0, datosFiltrados = null, busquedaActiva }: Props) {
   const [refacciones, setRefacciones] = useState([])
   const [refaccionSeleccionada, setRefaccionSeleccionada] = useState<{ codigo: number; descripcion: string } | null>(null)
+  
 
   const fetchRefacciones = async () => {
     try {
@@ -32,7 +35,7 @@ export function TablaRefacciones({ refrescar }: Props) {
       toast({
         title: "Error al cargar refacciones",
         description: "No se pudieron obtener los datos.",
-        variant: "destructive"
+        variant: "destructive",
       })
     }
   }
@@ -49,7 +52,7 @@ export function TablaRefacciones({ refrescar }: Props) {
       toast({
         title: "Error al eliminar",
         description: "No se pudo eliminar la refacción.",
-        variant: "destructive"
+        variant: "destructive",
       })
     }
   }
@@ -59,8 +62,12 @@ export function TablaRefacciones({ refrescar }: Props) {
   }, [])
 
   useEffect(() => {
-    if (refrescar) fetchRefacciones()
+    if (refrescar !== 0) {
+      fetchRefacciones()
+    }
   }, [refrescar])
+
+  const datosAMostrar = busquedaActiva ? datosFiltrados ?? [] : refacciones
 
   return (
     <div className="overflow-x-auto mt-6">
@@ -87,7 +94,23 @@ export function TablaRefacciones({ refrescar }: Props) {
             </tr>
           </thead>
           <tbody>
-            {refacciones.map((item: any) => (
+          {busquedaActiva.trim() !== "" && datosFiltrados?.length === 0 && (
+              <tr>
+                <td colSpan={16} className="text-center py-4 text-red-500 bg-[#424242] font-semibold">
+                  No existe ninguna refacción con el código: <strong>{busquedaActiva}</strong>
+                </td>
+              </tr>
+            )}
+
+            {!busquedaActiva && refacciones.length === 0 && (
+              <tr>
+                <td colSpan={16} className="text-center py-4 text-gray-500 font-semibold">
+                  No hay refacciones registradas
+                </td>
+              </tr>
+            )}
+
+            {datosAMostrar.map((item: any) => (
               <tr key={item.codigo} className="border-b bg-[#424242] text-white hover:bg-gray-400 hover:text-black transition">
                 <td className="p-2">{item.codigo}</td>
                 <td className="p-2">{item.descripcion}</td>
@@ -111,10 +134,14 @@ export function TablaRefacciones({ refrescar }: Props) {
                     <AlertDialogTrigger asChild>
                       <button
                         onClick={() =>
-                          setRefaccionSeleccionada({ codigo: item.codigo, descripcion: item.descripcion })}
+                          setRefaccionSeleccionada({
+                            codigo: item.codigo,
+                            descripcion: item.descripcion,
+                          })
+                        }
                         className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
                       >
-                        <Trash/>
+                        <Trash />
                       </button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -133,7 +160,10 @@ export function TablaRefacciones({ refrescar }: Props) {
                         <AlertDialogAction
                           onClick={() => {
                             if (refaccionSeleccionada)
-                              eliminarRefaccion(refaccionSeleccionada.codigo, refaccionSeleccionada.descripcion)
+                              eliminarRefaccion(
+                                refaccionSeleccionada.codigo,
+                                refaccionSeleccionada.descripcion
+                              )
                           }}
                           className="bg-red-500 hover:bg-red-700"
                         >
@@ -150,5 +180,4 @@ export function TablaRefacciones({ refrescar }: Props) {
       </div>
     </div>
   )
-  
 }
