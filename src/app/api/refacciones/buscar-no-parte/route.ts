@@ -4,19 +4,10 @@ import { db } from "@/lib/db"
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get("query")
 
-  if (!query || isNaN(Number(query))) {
-    return NextResponse.json([])
-  }
-
-  const codigoInt = parseInt(query)
+  if (!query) return NextResponse.json([])
 
   try {
-    const resultados = await db.refacciones_l3.findMany({
-      where: {
-        codigo: {
-          gte: codigoInt,
-        },
-      },
+    const todos = await db.refacciones_l3.findMany({
       orderBy: { fechaIngreso: "desc" },
       include: {
         ubicacion: true,
@@ -24,13 +15,13 @@ export async function GET(req: NextRequest) {
       },
     })
 
-    const filtrados = resultados.filter((item) =>
-      item.codigo.toString().startsWith(query)
+    const filtrados = todos.filter((ref) =>
+      ref.noParte.toLowerCase().includes(query.toLowerCase())
     )
 
     return NextResponse.json(filtrados)
   } catch (error) {
-    console.error("Error al buscar refacción por código:", error)
+    console.error("Error al buscar por número de parte:", error)
     return new NextResponse("INTERNAL ERROR", { status: 500 })
   }
 }

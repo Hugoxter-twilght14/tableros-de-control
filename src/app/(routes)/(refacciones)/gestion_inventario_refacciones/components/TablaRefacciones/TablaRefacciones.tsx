@@ -15,18 +15,26 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
 import { Trash } from "lucide-react"
+import { Refaccion } from "./TablaRefacciones.types"
 
 interface Props {
   refrescar?: number
-  datosFiltrados?: any[] | null
-  busquedaActiva: string
+  datosFiltradosCodigo?: Refaccion[] | null
+  datosFiltradosNoParte?: Refaccion[] | null
+  busquedaCodigo: string
+  busquedaNoParte: string
 }
 
-export function TablaRefacciones({ refrescar = 0, datosFiltrados = null, busquedaActiva }: Props) {
-  const [refacciones, setRefacciones] = useState([])
-  const [refaccionSeleccionada, setRefaccionSeleccionada] = useState<{ codigo: number; descripcion: string } | null>(null)
+export function TablaRefacciones({
+  refrescar = 0,
+  datosFiltradosCodigo = null,
+  datosFiltradosNoParte = null,
+  busquedaCodigo,
+  busquedaNoParte,
+}: Props) {
+  const [refacciones, setRefacciones] = useState<Refaccion[]>([])
+  const [refaccionSeleccionada, setRefaccionSeleccionada] = useState<Pick<Refaccion, "codigo" | "descripcion"> | null>(null)
   
-
   const fetchRefacciones = async () => {
     try {
       const { data } = await axios.get("/api/refacciones/get")
@@ -67,7 +75,18 @@ export function TablaRefacciones({ refrescar = 0, datosFiltrados = null, busqued
     }
   }, [refrescar])
 
-  const datosAMostrar = busquedaActiva ? datosFiltrados ?? [] : refacciones
+  // lógica para mostrar datos filtrados
+  let datosAMostrar = refacciones
+
+  if (busquedaCodigo.trim() !== "" && datosFiltradosCodigo) {
+    datosAMostrar = datosFiltradosCodigo
+  } else if (busquedaNoParte.trim() !== "" && datosFiltradosNoParte) {
+    datosAMostrar = datosFiltradosNoParte
+  }
+
+  const noHayResultados =
+    (busquedaCodigo.trim() !== "" && datosFiltradosCodigo?.length === 0) ||
+    (busquedaNoParte.trim() !== "" && datosFiltradosNoParte?.length === 0)
 
   return (
     <div className="overflow-x-auto mt-6">
@@ -94,24 +113,22 @@ export function TablaRefacciones({ refrescar = 0, datosFiltrados = null, busqued
             </tr>
           </thead>
           <tbody>
-          {busquedaActiva.trim() !== "" && datosFiltrados?.length === 0 && (
+            {noHayResultados && (
               <tr>
                 <td colSpan={16} className="text-center py-4 text-red-500 bg-[#424242] font-semibold">
-                  No existe ninguna refacción con el código: <strong>{busquedaActiva}</strong>
-                </td>
-              </tr>
-            )}
-
-            {!busquedaActiva && refacciones.length === 0 && (
-              <tr>
-                <td colSpan={16} className="text-center py-4 text-gray-500 font-semibold">
-                  No hay refacciones registradas
+                  No existe ninguna refacción con el{" "}
+                  {busquedaCodigo
+                    ? `código: ${busquedaCodigo}`
+                    : `número de parte: ${busquedaNoParte}`}
                 </td>
               </tr>
             )}
 
             {datosAMostrar.map((item: any) => (
-              <tr key={item.codigo} className="border-b bg-[#424242] text-white hover:bg-gray-400 hover:text-black transition">
+              <tr
+                key={item.codigo}
+                className="border-b bg-[#424242] text-white hover:bg-gray-400 hover:text-black transition"
+              >
                 <td className="p-2">{item.codigo}</td>
                 <td className="p-2">{item.descripcion}</td>
                 <td className="p-2">{item.noParte}</td>
@@ -134,10 +151,7 @@ export function TablaRefacciones({ refrescar = 0, datosFiltrados = null, busqued
                     <AlertDialogTrigger asChild>
                       <button
                         onClick={() =>
-                          setRefaccionSeleccionada({
-                            codigo: item.codigo,
-                            descripcion: item.descripcion,
-                          })
+                          setRefaccionSeleccionada({ codigo: item.codigo, descripcion: item.descripcion })
                         }
                         className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
                       >
@@ -148,22 +162,15 @@ export function TablaRefacciones({ refrescar = 0, datosFiltrados = null, busqued
                       <AlertDialogHeader>
                         <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Estás a punto de eliminar la refacción{" "}
-                          <strong>{refaccionSeleccionada?.descripcion}</strong>. Esta acción no se puede
-                          revertir.
+                          Estás a punto de eliminar la refacción <strong>{refaccionSeleccionada?.descripcion}</strong>. Esta acción no se puede revertir.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel className="hover:bg-white hover:text-black transition-all">
-                          Cancelar
-                        </AlertDialogCancel>
+                        <AlertDialogCancel className="hover:bg-white hover:text-black transition-all">Cancelar</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => {
                             if (refaccionSeleccionada)
-                              eliminarRefaccion(
-                                refaccionSeleccionada.codigo,
-                                refaccionSeleccionada.descripcion
-                              )
+                              eliminarRefaccion(refaccionSeleccionada.codigo, refaccionSeleccionada.descripcion)
                           }}
                           className="bg-red-500 hover:bg-red-700"
                         >
