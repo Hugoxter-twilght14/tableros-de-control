@@ -7,6 +7,7 @@ import { TablaRefacciones } from "../TablaRefacciones/TablaRefacciones"
 import { ButtonRegresar } from "../ButtonRegresar"
 import { BarraBusquedaRefacciones } from "../BarraBusquedaRefacciones/BarraBusquedaRefacciones"
 import { BarraBusquedaNoParte } from "../BarraBusquedaNoParte/BarraBusquedaNoParte"
+import AgregarNuevaRefaccion from "../AgregarNuevaUbicacion/AgregarNuevaRefaccion"
 
 export function ControlRefaccionesClient() {
   const [open, setOpen] = useState(false)
@@ -81,6 +82,9 @@ export function ControlRefaccionesClient() {
         <RefaccionesForm onSuccess={manejarRegistroExitoso} />
       </DialogContent>
     </Dialog>
+
+    {/*COMPONENTE PARA AGREGAR UNA NUEVA UBICACIÓN O RACK*/}
+    <AgregarNuevaRefaccion/>
   </div>
 </div>
 
