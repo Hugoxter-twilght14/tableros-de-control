@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 
+export const dynamic = "force-dynamic"
 export async function GET() {
   try {
     const refacciones = await db.refacciones_l3.findMany({

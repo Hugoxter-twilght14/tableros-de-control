@@ -32,7 +32,7 @@ export function BarraBusquedaRefacciones({ onResultados, onLimpiar, desactivar }
       controllerRef.current = controller
 
       axios
-        .get(`/api/refacciones/buscar?query=${query}`, {
+        .get(`/api/refacciones/historial-movimiento/barra-codigo?query=${query}`, {
           signal: controller.signal,
         })
         .then((res) => {

@@ -48,7 +48,6 @@ model refacciones_l3 {
   cantidad           Int?
   fechaIngreso       DateTime
   movimiento         Movimiento
-  fechaVencimiento   DateTime
 
   unidadMedidaId     Unidad_medida
   
@@ -58,6 +57,17 @@ model refacciones_l3 {
 
   reportadoPorId     Int
   usuarioReportado   usuario       @relation("UsuarioReportado", fields: [reportadoPorId], references: [id])
+}
+
+model historial_movimientos {
+  id              Int           @id @default(autoincrement())
+  codigoRefaccion Int
+  descripcion     String
+  noParte         String
+  movimiento      Movimiento
+  cantidad        Int
+  existenciaFisicaDespues Int
+  fechaMovimiento DateTime      @default(now())
 }
 
 enum Movimiento {

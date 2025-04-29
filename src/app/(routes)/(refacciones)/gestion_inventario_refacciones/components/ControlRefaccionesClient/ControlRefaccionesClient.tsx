@@ -8,6 +8,7 @@ import { ButtonRegresar } from "../ButtonRegresar"
 import { BarraBusquedaRefacciones } from "../BarraBusquedaRefacciones/BarraBusquedaRefacciones"
 import { BarraBusquedaNoParte } from "../BarraBusquedaNoParte/BarraBusquedaNoParte"
 import AgregarNuevaRefaccion from "../AgregarNuevaUbicacion/AgregarNuevaRefaccion"
+import MovimientoStock from "../MovimientoStock/MovimientoStock"
 
 export function ControlRefaccionesClient() {
   const [open, setOpen] = useState(false)
@@ -71,6 +72,7 @@ export function ControlRefaccionesClient() {
 
   <div className="mt-2 flex justify-center gap-4">
     <ButtonRegresar />
+    
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="bg-blue-900 text-white hover:bg-green-600 px-6 py-2 rounded-full text-sm sm:text-base">
@@ -82,8 +84,13 @@ export function ControlRefaccionesClient() {
         <RefaccionesForm onSuccess={manejarRegistroExitoso} />
       </DialogContent>
     </Dialog>
+
+    <div className="bg-blue-900 text-white hover:bg-green-600 px-6 py-2 rounded-full text-sm sm:text-base">
+    <MovimientoStock onSuccess={manejarRegistroExitoso}/>
+  </div>
   </div>
 </div>
+
       {/*Componente de TablaRefacciones */}
       <div className="px-2 sm:px-4 md:px-6">
         <TablaRefacciones

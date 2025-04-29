@@ -31,12 +31,12 @@ export function RefaccionesForm({ onSuccess }: Props) {
       noParte: "",
       proveedores: "",
       fechaIngreso: "",
-      fechaVencimiento: "",
       unidadMedidaId: "PZ",
       ubicacionId: 0,
       reportadoPorId: 0,
-      cantidad: 1
-    }
+      cantidad: 1,
+      existenciaSistema: 0 // 👈 nuevo campo manual
+    }    
   })
 
   const [ubicaciones, setUbicaciones] = useState([])
@@ -114,23 +114,24 @@ export function RefaccionesForm({ onSuccess }: Props) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="fechaVencimiento"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-white">Fecha de Vencimiento</FormLabel>
-              <FormControl>
-                <Input
-                  type="date"
-                  {...field}
-                  className="text-black bg-white w-full rounded-md px-3 py-2"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+<FormField
+  control={form.control}
+  name="existenciaSistema"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel className="text-white">Existencia en sistema</FormLabel>
+      <FormControl>
+        <Input
+          type="number"
+          {...field}
+          className="text-black bg-white w-full rounded-md px-3 py-2"
         />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
 
         <FormField
           control={form.control}
@@ -143,10 +144,10 @@ export function RefaccionesForm({ onSuccess }: Props) {
                   {...field}
                   className="text-black bg-white w-full rounded-md p-2 border"
                 >
-                  <option value="PZ">Piezas</option>
-                  <option value="KG">Kilogramos</option>
-                  <option value="LTS">Litros</option>
-                  <option value="MTS">Metros</option>
+                  <option value="PZ">Pz</option>
+                  <option value="KG">Kg</option>
+                  <option value="LTS">Lts</option>
+                  <option value="MTS">Mts</option>
                 </select>
               </FormControl>
               <FormMessage />
@@ -196,10 +197,10 @@ export function RefaccionesForm({ onSuccess }: Props) {
           )}
         />
 
-         {/* ✅ Aquí sí puedes poner el botón de agregar nueva ubicación */}
-<div className="mt-4 justify-center mx-95">
-  <AgregarNuevaUbicacion/>
-</div>
+         {/*botón de agregar nueva ubicación */}
+          <div className="mt-4 justify-center mx-95">
+            <AgregarNuevaUbicacion/>
+          </div>
 
         <div className="lg:col-span-3 flex justify-center mt-4">
           <Button

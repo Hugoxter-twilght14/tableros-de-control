@@ -8,12 +8,12 @@ export async function POST(request: Request) {
       descripcion,
       noParte,
       fechaIngreso,
-      fechaVencimiento,
       proveedores,
       unidadMedidaId,
       ubicacionId,
       reportadoPorId,
-      cantidad
+      cantidad,
+      existenciaSistema
     } = await request.json()
 
     const existe = await db.refacciones_l3.findUnique({
@@ -24,27 +24,40 @@ export async function POST(request: Request) {
       return new NextResponse("Ya existe una refacción con este código", { status: 400 })
     }
 
+    const existenciaFisica = cantidad
+    const diferencia = Math.abs(existenciaFisica - existenciaSistema)
+
     const nuevaRefaccion = await db.refacciones_l3.create({
       data: {
         codigo,
         descripcion,
         noParte,
         fechaIngreso: new Date(fechaIngreso),
-        fechaVencimiento: new Date(fechaVencimiento),
         proveedores,
         unidadMedidaId,
-        existenciaFisica: cantidad,
-        existenciaSistema: cantidad,
-        diferencias: 0,
+        existenciaFisica,
+        existenciaSistema,
+        diferencias: diferencia,
         cantidadEntrada: 0,
         cantidadSalida: 0,
-        movimiento: "NUEVO_INGRESO", // ← Enum válido
+        movimiento: "NUEVO_INGRESO",
         ubicacion: {
           connect: { id: ubicacionId }
         },
         usuarioReportado: {
           connect: { id: reportadoPorId }
         }
+      }
+    })
+    
+    await db.historial_movimientos.create({
+      data: {
+        codigoRefaccion: nuevaRefaccion.codigo,
+        descripcion: nuevaRefaccion.descripcion,
+        noParte: nuevaRefaccion.noParte,
+        movimiento: "NUEVO_INGRESO",
+        cantidad: nuevaRefaccion.existenciaFisica,
+        existenciaFisicaDespues: nuevaRefaccion.existenciaFisica
       }
     })
 

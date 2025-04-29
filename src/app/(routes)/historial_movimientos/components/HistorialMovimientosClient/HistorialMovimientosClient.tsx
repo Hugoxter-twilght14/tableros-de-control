@@ -1,11 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { TablaRefacciones } from "../TablaRefacciones/TablaRefacciones"
-import { ButtonRegresar } from "../ButtonRegresar"
 import { BarraBusquedaRefacciones } from "../BarraBusquedaRefacciones/BarraBusquedaRefacciones"
 import { BarraBusquedaNoParte } from "../BarraBusquedaNoParte/BarraBusquedaNoParte"
+import { TablaRefaccionesHistorial } from "../TablaRefaccionesHistorial"
 
 export function HistorialMovimientosClient() {
   const [refrescar] = useState<number>(0)
@@ -66,7 +64,7 @@ export function HistorialMovimientosClient() {
 
       {/*Componente de TablaRefacciones */}
       <div className="px-2 sm:px-4 md:px-6">
-        <TablaRefacciones
+        <TablaRefaccionesHistorial
           refrescar={refrescar}
           datosFiltradosCodigo={filtroCodigo}
           datosFiltradosNoParte={filtroNoParte}

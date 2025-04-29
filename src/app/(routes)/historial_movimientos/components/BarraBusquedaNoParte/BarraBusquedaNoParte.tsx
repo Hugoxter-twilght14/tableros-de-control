@@ -22,7 +22,7 @@ export function BarraBusquedaNoParte({ onResultados, onLimpiar, desactivar }: Pr
       if (desactivar) return
 
       try {
-        const res = await axios.get(`/api/refacciones/buscar-no-parte?query=${busqueda}`)
+        const res = await axios.get(`/api/refacciones/historial-movimiento/barra-noparte?query=${busqueda}`)
         onResultados(res.data, busqueda)
       } catch (error) {
         console.error("Error al filtrar por No. Parte:", error)
