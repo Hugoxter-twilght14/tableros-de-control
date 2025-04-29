@@ -8,11 +8,13 @@ import { z } from "zod"
 import axios from "axios"
 import { toast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
+
 import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
+import AgregarNuevaUbicacion from "../../AgregarNuevaUbicacion/AgregarNuevaRefaccion"
 
 type FormValues = z.infer<typeof refaccionSchema>
 
@@ -193,6 +195,11 @@ export function RefaccionesForm({ onSuccess }: Props) {
             </FormItem>
           )}
         />
+
+         {/* ✅ Aquí sí puedes poner el botón de agregar nueva ubicación */}
+<div className="mt-4 justify-center mx-95">
+  <AgregarNuevaUbicacion/>
+</div>
 
         <div className="lg:col-span-3 flex justify-center mt-4">
           <Button

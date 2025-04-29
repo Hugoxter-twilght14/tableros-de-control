@@ -2,6 +2,7 @@ import { auth } from "../../../../auth";
 import { redirect } from "next/navigation";
 import { Navbar } from "./components/Navbar";
 import { ButtonRegresar } from "./components/ButtonRegresar";
+import { HistorialMovimientosClient } from "./components/HistorialMovimientosClient";
 
 export default async function page() {
   const session = await auth();
@@ -17,10 +18,9 @@ export default async function page() {
       <Navbar />
 
       {/* Título con margen adaptativo */}
-      <div className="mt-16 md:mt-24 lg:mt-32 mb-8 px-4">
-        <h1 className="text-white text-xl md:text-3xl lg:text-4xl font-bold text-center">
-          PANEL DE HISTORIAL DE MOVIMIENTOS
-        </h1>
+      <div className="mt-16 px-4">
+        <h1 className="text-white text-3xl font-bold text-center">HISTORIAL DE MOVIMIENTOS</h1>
+          <HistorialMovimientosClient/>
       </div>
       {/* Botón de regresar */}
       <div className="flex justify-center mt-10">
