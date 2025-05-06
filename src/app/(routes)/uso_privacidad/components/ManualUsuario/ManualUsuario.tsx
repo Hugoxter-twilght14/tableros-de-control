@@ -2,8 +2,15 @@ import React from 'react'
 
 export default function ManualUsuario() {
   return (
-    <div>
-      AQUI VA EL MANUAL DE USUARIO
+    <div className='gap-2 flex flex-col justify-center'>
+      <label htmlFor="contrato-informatico" className="text-white text-lg font-bold mb-2">
+        Haz click aqui para descargar el manual de usuario
+      </label>
+      <button className="bg-blue-500 text-white px-4 py-2 w-30 h-10 rounded-2xl hover:bg-blue-400 transition duration-300">
+        <a href="/manual-usuario-tablerosdecontrol.pdf" download>
+          Descargar
+        </a>
+      </button>
     </div>
   )
 }
