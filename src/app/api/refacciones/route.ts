@@ -3,6 +3,8 @@ import { db } from "@/lib/db"
 
 export async function POST(request: Request) {
   try {
+    const body = await request.json()
+
     const {
       codigo,
       descripcion,
@@ -14,42 +16,69 @@ export async function POST(request: Request) {
       reportadoPorId,
       cantidad,
       existenciaSistema
-    } = await request.json()
+    } = body
 
+    // Coerción y validación básica
+    const parsedCodigo = Number(codigo)
+    const parsedUbicacionId = Number(ubicacionId)
+    const parsedReportadoPorId = Number(reportadoPorId)
+    const parsedCantidad = Number(cantidad)
+    const parsedExistenciaSistema = Number(existenciaSistema)
+
+    if (
+      isNaN(parsedCodigo) ||
+      !descripcion ||
+      !noParte ||
+      !fechaIngreso ||
+      !proveedores ||
+      !unidadMedidaId ||
+      isNaN(parsedUbicacionId) ||
+      isNaN(parsedReportadoPorId)
+    ) {
+      return new NextResponse("Datos faltantes o inválidos", { status: 400 })
+    }
+    
+
+    // Validación y parseo de fecha (formato yyyy-mm-dd)
+    const parsedFecha = new Date(fechaIngreso)
+    if (isNaN(parsedFecha.getTime())) {
+      return new NextResponse("Fecha de ingreso inválida", { status: 400 })
+    }
+
+    // Verifica si ya existe una refacción con ese código
     const existe = await db.refacciones_l3.findUnique({
-      where: { codigo }
+      where: { codigo: parsedCodigo }
     })
 
     if (existe) {
       return new NextResponse("Ya existe una refacción con este código", { status: 400 })
     }
 
-    const existenciaFisica = cantidad
-    const diferencia = Math.abs(existenciaFisica - existenciaSistema)
+    const existenciaFisica = parsedCantidad
+    const diferencia = Math.abs(existenciaFisica - parsedExistenciaSistema)
 
+    // Crear nueva refacción
     const nuevaRefaccion = await db.refacciones_l3.create({
       data: {
-        codigo,
+        codigo: parsedCodigo,
         descripcion,
         noParte,
-        fechaIngreso: new Date(fechaIngreso),
+        fechaIngreso: parsedFecha,
         proveedores,
         unidadMedidaId,
         existenciaFisica,
-        existenciaSistema,
+        existenciaSistema: parsedExistenciaSistema,
         diferencias: diferencia,
         cantidadEntrada: 0,
         cantidadSalida: 0,
+        cantidad: parsedCantidad,
         movimiento: "NUEVO_INGRESO",
-        ubicacion: {
-          connect: { id: ubicacionId }
-        },
-        usuarioReportado: {
-          connect: { id: reportadoPorId }
-        }
+        ubicacion: { connect: { id: parsedUbicacionId } },
+        usuarioReportado: { connect: { id: parsedReportadoPorId } }
       }
     })
-    
+
+    // Registrar historial
     await db.historial_movimientos.create({
       data: {
         codigoRefaccion: nuevaRefaccion.codigo,
@@ -61,9 +90,11 @@ export async function POST(request: Request) {
       }
     })
 
+    console.log("✅ Refacción registrada correctamente:", nuevaRefaccion)
     return NextResponse.json(nuevaRefaccion)
+
   } catch (error) {
-    console.error("Error al registrar refacción:", error)
+    console.error("❌ Error al registrar refacción:", error)
     return new NextResponse("INTERNAL ERROR", { status: 500 })
   }
 }

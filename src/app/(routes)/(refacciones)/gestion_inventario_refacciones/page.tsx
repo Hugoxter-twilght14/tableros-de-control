@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/shared/Navbar"
 import { auth } from "../../../../../auth"
 import { redirect } from "next/navigation"
-import { ControlRefaccionesClient } from "./components/ControlRefaccionesClient"
+import ControlRefaccionesClient from "./components/ControlRefaccionesClient/ControlRefaccionesClient"
 
 export default async function page() {
   const session = await auth()
@@ -17,7 +17,7 @@ export default async function page() {
       <div className="mt-16 px-4">
         <h1 className="text-white text-3xl font-bold text-center">CONTROL DE REFACCIONES</h1>
 
-        <ControlRefaccionesClient />
+        <ControlRefaccionesClient/>
       </div>
     </div>
   )

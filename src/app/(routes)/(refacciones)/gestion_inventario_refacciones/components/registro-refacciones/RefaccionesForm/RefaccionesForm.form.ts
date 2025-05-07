@@ -7,8 +7,8 @@ export const refaccionSchema = z.object({
   proveedores: z.string().min(1, "Proveedor requerido"),
   fechaIngreso: z.string().min(1, "Fecha requerida"),
   unidadMedidaId: z.enum(["KG", "LTS", "PZ", "MTS"]),
-  ubicacionId: z.coerce.number(),
-  reportadoPorId: z.coerce.number(),
-  cantidad: z.coerce.number().min(1, "La cantidad es obligatoria y debe ser mayor a cero"),
-  existenciaSistema: z.coerce.number().min(0, "La existencia en sistema es obligatoria"),
+  ubicacionId: z.coerce.number().min(1, "Ubicación requerida"),
+  reportadoPorId: z.coerce.number().min(1, "Usuario requerido"),
+  cantidad: z.coerce.number().min(1, "La cantidad debe ser mayor a 0"),
+  existenciaSistema: z.coerce.number().min(0, "La existencia debe ser 0 o más")
 })
