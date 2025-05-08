@@ -40,7 +40,7 @@ export default function ControlRefaccionesClient() {
         <div className="flex flex-wrap justify-center gap-4">
           {/* filtros */}
           <div className="flex flex-col items-start">
-            <label className="text-white mb-1">Filtrar por Código</label>
+            <label className="text-white mb-1">Buscar por código:</label>
             <BarraBusquedaRefacciones
               onResultados={(res, query) => {
                 setFiltroCodigo(res)
@@ -56,7 +56,7 @@ export default function ControlRefaccionesClient() {
           </div>
 
           <div className="flex flex-col items-start">
-            <label className="text-white mb-1">Filtrar por No. Parte</label>
+            <label className="text-white mb-1">Buscar por No. parte:</label>
             <BarraBusquedaNoParte
               onResultados={(res, query) => {
                 setFiltroNoParte(res)
@@ -77,7 +77,7 @@ export default function ControlRefaccionesClient() {
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <button className="bg-blue-900 text-white hover:bg-green-600 px-6 py-2 rounded-full text-sm sm:text-base">
+              <button  className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500">
                 Nueva Refacción
               </button>
             </DialogTrigger>
@@ -89,7 +89,7 @@ export default function ControlRefaccionesClient() {
             </DialogContent>
           </Dialog>
 
-          <div className="bg-blue-900 text-white hover:bg-green-600 px-6 py-2 rounded-full text-sm sm:text-base">
+          <div className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500">
             <MovimientoStock onSuccess={manejarRegistroExitoso} />
           </div>
         </div>

@@ -13,6 +13,10 @@ interface Movimiento {
   cantidad: number
   existenciaFisicaDespues: number
   fechaMovimiento: string
+  usuarioReportado?: {
+    nombre?: string
+  }
+  reportadoPorId: number
 }
 
 interface Props {
@@ -78,8 +82,9 @@ export function TablaRefaccionesHistorial({
               <th className="p-3 text-left">Descripción</th>
               <th className="p-3 text-left">No. Parte</th>
               <th className="p-3 text-left">Movimiento</th>
-              <th className="p-3 text-left">Cantidad</th>
-              <th className="p-3 text-left">Existencia después</th>
+              <th className="p-3 text-left">Cantidad ingresada</th>
+              <th className="p-3 text-left">Stock actual</th>
+              <th className="p-3 text-left">Realizado por</th>
               <th className="p-3 text-left">Fecha</th>
             </tr>
           </thead>
@@ -105,6 +110,7 @@ export function TablaRefaccionesHistorial({
                   <td className="p-2">{item.movimiento}</td>
                   <td className="p-2">{item.cantidad}</td>
                   <td className="p-2">{item.existenciaFisicaDespues}</td>
+                  <td className="p-2">{item.usuarioReportado?.nombre || `ID ${item.reportadoPorId}`}</td>
                   <td className="p-2">{new Date(item.fechaMovimiento).toLocaleString()}</td>
                 </tr>
               ))

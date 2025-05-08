@@ -52,9 +52,9 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <FormField control={form.control} name="nombre" render={({ field }) => (
           <FormItem>
-            <FormLabel>Nombre</FormLabel>
+            <FormLabel>Nombre*</FormLabel>
             <FormControl><Input placeholder="Tu nombre" {...field} className="text-black bg-white" /></FormControl>
-            <FormMessage />
+            <FormMessage className="text-red-500" />
           </FormItem>
         )} />
 
@@ -62,7 +62,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
           <FormItem>
             <FormLabel>Email*</FormLabel>
             <FormControl><Input placeholder="Escribe tu correo" {...field} className="text-black bg-white" /></FormControl>
-            <FormMessage />
+            <FormMessage className="text-red-500" />
           </FormItem>
         )} />
 
@@ -70,15 +70,15 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
           <FormItem>
             <FormLabel>URL de imagen</FormLabel>
             <FormControl><Input placeholder="Opcional: una URL de foto" {...field} className="text-black bg-white" /></FormControl>
-            <FormMessage />
+            <FormMessage className="text-red-500" />
           </FormItem>
         )} />
 
         <FormField control={form.control} name="telefono" render={({ field }) => (
           <FormItem>
-            <FormLabel>Teléfono</FormLabel>
+            <FormLabel>Teléfono*</FormLabel>
             <FormControl><Input placeholder="Opcional: tu teléfono" {...field} className="text-black bg-white" /></FormControl>
-            <FormMessage />
+            <FormMessage className="text-red-500" />
           </FormItem>
         )} />
 
@@ -93,7 +93,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
                 <option value="DESPACHADOR">Despachador</option>
               </select>
             </FormControl>
-            <FormMessage />
+            <FormMessage className="text-red-500" />
           </FormItem>
         )} />
 
@@ -101,7 +101,7 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
           <FormItem>
             <FormLabel>Contraseña*</FormLabel>
             <FormControl><Input type="password" placeholder="Escribe una contraseña" {...field} className="text-black bg-white" /></FormControl>
-            <FormMessage />
+            <FormMessage className="text-red-500" />
           </FormItem>
         )} />
 
@@ -110,12 +110,12 @@ export function RegisterForm({ onSuccess }: { onSuccess?: () => void }) {
             <FormLabel>Repetir contraseña*</FormLabel>
             <FormControl><Input type="password" placeholder="Repite la contraseña" {...field} className="text-black bg-white" /></FormControl>
             <FormDescription>* Campos obligatorios</FormDescription>
-            <FormMessage />
+            <FormMessage  className="text-red-500" />
           </FormItem>
         )} />
 
         <div className="sm:col-span-2">
-          <Button type="submit" className="w-full bg-[#1e3a5f] text-white hover:text-black hover:bg-green-700 h-10 rounded-2xl">
+          <Button type="submit"  className="w-full h-10 text-white px-4 py-2 rounded-2xl text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500">
             Crear cuenta
           </Button>
         </div>

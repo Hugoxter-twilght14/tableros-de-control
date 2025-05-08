@@ -18,6 +18,13 @@ export async function GET(req: NextRequest) {
         },
       },
       orderBy: { fechaMovimiento: "desc" },
+      include: {
+        usuarioReportado: {
+          select: {
+            nombre: true,
+          },
+        },
+      },
     });
 
     const filtrados = resultados.filter((item) =>

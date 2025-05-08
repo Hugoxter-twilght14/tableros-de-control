@@ -33,6 +33,7 @@ model usuario {
   updatedAt      DateTime           @updatedAt
 
   reportesL3     refacciones_l3[]   @relation("UsuarioReportado")
+  movimientosReportados  historial_movimientos[]   @relation("UsuarioReportadoHistorial")
 }
 
 model refacciones_l3 {
@@ -67,6 +68,10 @@ model historial_movimientos {
   movimiento      Movimiento
   cantidad        Int
   existenciaFisicaDespues Int
+
+  reportadoPorId     Int
+  usuarioReportado   usuario       @relation("UsuarioReportadoHistorial", fields: [reportadoPorId], references: [id])
+
   fechaMovimiento DateTime      @default(now())
 }
 

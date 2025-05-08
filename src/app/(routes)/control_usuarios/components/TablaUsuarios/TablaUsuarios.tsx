@@ -15,7 +15,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
-import { Trash } from "lucide-react"
+import { Trash2 } from "lucide-react"
 
 
 interface Props {
@@ -85,9 +85,9 @@ export function TablaUsuarios({ refrescar }: Props) {
                 <AlertDialogTrigger asChild>
                   <button
                     onClick={() => setUsuarioSeleccionado({ id: user.id, nombre: user.nombre })}
-                    className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+                    className="bg-gradient-to-b from-[#c62828] 80% to-[#9d4245] text-white px-3 py-1 rounded-[5px] hover:bg-red-700 transition"
                   >
-                    <Trash/>
+                    <Trash2/>
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>

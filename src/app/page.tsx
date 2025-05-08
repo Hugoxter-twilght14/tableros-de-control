@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { auth } from "../../auth";
 import { Navbar } from "./(routes)/(home)/components/Navbar";
 import { GestionAlmacen } from "./(routes)/(home)/components/GestionAlmacen";
-import { HistorialMovimiento } from "./(routes)/(home)/components/HistorialMovimiento";
 import { ControlUsuarios } from "./(routes)/(home)/components/ControlUsuarios";
 
 export default async function Home() {
@@ -37,9 +36,6 @@ export default async function Home() {
         </div>
         <div className="flex items-center justify-center w-full md:w-1/3 lg:w-1/4">
           <ControlUsuarios />
-        </div>
-        <div className="flex items-center justify-center w-full md:w-1/3 lg:w-1/4">
-          <HistorialMovimiento />
         </div>
       </div>
     </div>

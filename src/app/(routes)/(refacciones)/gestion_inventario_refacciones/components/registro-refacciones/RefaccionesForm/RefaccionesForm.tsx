@@ -204,7 +204,8 @@ export function RefaccionesForm({ onSuccess }: Props) {
 
         {/* Botón registrar */}
         <div className="lg:col-span-3 flex justify-center mt-4">
-          <Button type="submit" className="bg-[#1e3a5f] text-white hover:bg-green-600 h-10 px-10 rounded-full w-full sm:w-auto">
+          <Button type="submit"  className="bg-[#1e3a5f] text-white hover:bg-green-600 h-10 px-10 rounded-full w-full sm:w-auto"
+          >
             Registrar refacción
           </Button>
         </div>

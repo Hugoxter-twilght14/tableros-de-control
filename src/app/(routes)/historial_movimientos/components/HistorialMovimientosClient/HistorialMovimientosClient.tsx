@@ -28,7 +28,7 @@ export function HistorialMovimientosClient() {
      <div className="flex flex-col items-center gap-4">
   <div className="flex flex-wrap justify-center gap-4">
     <div className="flex flex-col items-start">
-      <label className="text-white mb-1">Filtrar por Código</label>
+    <label className="text-white mb-1 ml-3">Buscar por código:</label>
       <BarraBusquedaRefacciones
         onResultados={(res, query) => {
           setFiltroCodigo(res)
@@ -44,7 +44,7 @@ export function HistorialMovimientosClient() {
     </div>
 
     <div className="flex flex-col items-start">
-      <label className="text-white mb-1">Filtrar por No. Parte</label>
+    <label className="text-white mb-1 ml-3">Buscar por No. parte:</label>
       <BarraBusquedaNoParte
         onResultados={(res, query) => {
           setFiltroNoParte(res)

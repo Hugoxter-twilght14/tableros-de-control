@@ -59,7 +59,7 @@ export function BarraBusquedaRefacciones({ onResultados, onLimpiar, desactivar }
     <div className="flex flex-col w-full sm:w-auto sm:min-w-[280px]">
     <input
       type="number"
-      placeholder="Código de refacción"
+      placeholder="Ingresa código de la refacción"
       value={busqueda}
       onChange={(e) => setBusqueda(e.target.value)}
       className="w-[260px] px-3 py-2 rounded-full bg-white

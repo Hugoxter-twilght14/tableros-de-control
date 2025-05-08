@@ -10,8 +10,6 @@ export type Refaccion = {
     cantidadSalida?: number
     cantidad?: number
     fechaIngreso: string | Date
-    fechaVencimiento: string | Date
-    movimiento: string
     unidadMedidaId: string
     ubicacion: {
       rack: number

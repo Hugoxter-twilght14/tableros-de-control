@@ -5,6 +5,14 @@ export async function GET() {
   try {
     const movimientos = await db.historial_movimientos.findMany({
       orderBy: { fechaMovimiento: "desc" },
+      include: {
+        usuarioReportado: {
+          select: {
+            nombre: true,
+            id: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(movimientos);

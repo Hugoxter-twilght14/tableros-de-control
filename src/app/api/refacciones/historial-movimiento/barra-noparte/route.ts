@@ -9,6 +9,13 @@ export async function GET(req: NextRequest) {
   try {
     const resultados = await db.historial_movimientos.findMany({
       orderBy: { fechaMovimiento: "desc" },
+      include: {
+        usuarioReportado: {
+          select: {
+            nombre: true,
+          },
+        },
+      },
     });
 
     const filtrados = resultados.filter((item) =>

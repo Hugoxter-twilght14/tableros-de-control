@@ -14,7 +14,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
-import { Trash } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import { Refaccion } from "./TablaRefacciones.types"
 
 interface Props {
@@ -100,15 +100,13 @@ export function TablaRefacciones({
               <th className="p-3 text-left">Exist. Fís.</th>
               <th className="p-3 text-left">Exist. Sist.</th>
               <th className="p-3 text-left">Diferencias</th>
-              <th className="p-3 text-left">Proveedor</th>
+              <th className="p-3 text-left">Unidad</th>
               <th className="p-3 text-left">Entrada</th>
               <th className="p-3 text-left">Salida</th>
-              <th className="p-3 text-left">Ingreso</th>
-              <th className="p-3 text-left">Vencimiento</th>
-              <th className="p-3 text-left">Movimiento</th>
-              <th className="p-3 text-left">Unidad</th>
+              <th className="p-3 text-left">Proveedor</th>
               <th className="p-3 text-left">Ubicación</th>
               <th className="p-3 text-left">Reportado por</th>
+              <th className="p-3 text-left">Ingreso</th>
               <th className="p-3 text-center">Acciones</th>
             </tr>
           </thead>
@@ -135,17 +133,15 @@ export function TablaRefacciones({
                 <td className="p-2">{item.existenciaFisica}</td>
                 <td className="p-2">{item.existenciaSistema}</td>
                 <td className="p-2">{item.diferencias}</td>
-                <td className="p-2">{item.proveedores}</td>
+                <td className="p-2">{item.unidadMedidaId}</td>
                 <td className="p-2">{item.cantidadEntrada}</td>
                 <td className="p-2">{item.cantidadSalida}</td>
-                <td className="p-2">{new Date(item.fechaIngreso).toLocaleDateString()}</td>
-                <td className="p-2">{new Date(item.fechaVencimiento).toLocaleDateString()}</td>
-                <td className="p-2">{item.movimiento}</td>
-                <td className="p-2">{item.unidadMedidaId}</td>
+                <td className="p-2">{item.proveedores}</td>
                 <td className="p-2">
                   Rack {item.ubicacion?.rack}, Fila {item.ubicacion?.fila}, Pos. {item.ubicacion?.posicion}
                 </td>
                 <td className="p-2">{item.usuarioReportado?.nombre || `ID ${item.reportadoPorId}`}</td>
+                <td className="p-2">{new Date(item.fechaIngreso).toLocaleDateString()}</td>
                 <td className="p-2 text-center">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -153,9 +149,9 @@ export function TablaRefacciones({
                         onClick={() =>
                           setRefaccionSeleccionada({ codigo: item.codigo, descripcion: item.descripcion })
                         }
-                        className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 transition"
+                        className="bg-gradient-to-b from-[#c62828] 80% to-[#9d4245] text-white px-3 py-1 rounded-[5px] hover:bg-red-700 transition"
                       >
-                        <Trash />
+                        <Trash2 />
                       </button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>

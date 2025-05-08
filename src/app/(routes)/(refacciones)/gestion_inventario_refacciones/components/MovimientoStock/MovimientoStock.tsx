@@ -125,11 +125,11 @@ export default function MovimientoStock({ onSuccess }: Props) {
         <div className="space-y-3">
           <div className="flex gap-2">
             <Input placeholder="Buscar por código" value={codigo} onChange={(e) => setCodigo(e.target.value)} />
-            <Button onClick={buscarPorCodigo}className="bg-cyan-600 text-white px-5 py-2 rounded-full hover:bg-cyan-800 active:scale-95 transition-transform w-full sm:w-auto bg-[#426689]">Buscar</Button>
+            <Button onClick={buscarPorCodigo} className="rounded-[5px] bg-[#426689] hover:bg-[#567798dd] text-white" >Buscar</Button>
           </div>
           <div className="flex gap-2">
             <Input placeholder="Buscar por Nº Parte" value={noParte} onChange={(e) => setNoParte(e.target.value)} />
-            <Button onClick={buscarPorNoParte}className="bg-cyan-600 text-white px-5 py-2 rounded-full hover:bg-cyan-800 active:scale-95 transition-transform w-full sm:w-auto bg-[#426689]">Buscar</Button>
+            <Button onClick={buscarPorNoParte} className="rounded-[5px] bg-[#426689] hover:bg-[#567798dd] text-white" >Buscar</Button>
           </div>
 
           {refaccion && (

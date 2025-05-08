@@ -22,7 +22,7 @@ export function ControlUsuariosClient() {
   
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <button className="bg-blue-900 text-white hover:bg-green-600 px-6 py-2 rounded-full text-sm sm:text-base">
+              <button className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500">
                 Nuevo Usuario
               </button>
             </DialogTrigger>

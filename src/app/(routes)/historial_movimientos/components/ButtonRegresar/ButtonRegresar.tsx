@@ -5,7 +5,7 @@ export function ButtonRegresar() {
 
     const router = useRouter();
     const backToHome = () => {
-        router.push('/');
+        router.push('/gestion_almacen');
     };
 
   return (

@@ -25,7 +25,7 @@ export function Quimicos() {
 
       {/* Texto debajo del círculo - más abajo y más grande */}
       <p className="text-white text-center mt-4 text-lg md:text-xl lg:text-2xl font-semibold">
-        Almacén de Químicos
+        Almacén de químicos
       </p>
 
       {/* Menú circular alrededor del botón principal */}

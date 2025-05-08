@@ -28,14 +28,6 @@ export function NavbarMobile() {
     ))}
    </div>
 
-     {/*Creación de iconos search y notifications de la barra de navegación de PC a telefono */}
-   <div className="border-[1px] border-white/70 my-5"/>
-   <div className="flex justify-between gap-6 mt-4 ml-4">
-    
-    <p className="mx-[8px]">Perfil de usuario</p>
-
-   </div>
-
    <div className="flex justify-center mt-35">
    <Logo/>
    </div>

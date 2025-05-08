@@ -27,12 +27,6 @@ export function NavbarDesktop() {
                         ))}
                     </div>
                 </div>
-                <div className='flex gap-4 items-center'>
-                    <div className='flex gap-2 items-center'>
-                        {/*TOOD: ADD USER PROFILE*/}
-                        <p>Perfil usuario</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

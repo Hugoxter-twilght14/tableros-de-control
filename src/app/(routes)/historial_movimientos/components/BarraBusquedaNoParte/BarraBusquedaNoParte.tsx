@@ -35,12 +35,13 @@ export function BarraBusquedaNoParte({ onResultados, onLimpiar, desactivar }: Pr
 
   return (
     <div className="flex flex-col w-full sm:w-auto sm:min-w-[280px] rounded-full">
+
     <input
       type="text"
-      placeholder="Número de parte"
+      placeholder="Ingresa No. de parte de la refacción"
       value={busqueda}
       onChange={(e) => setBusqueda(e.target.value)}
-      className="w-[260px] px-3 py-2 rounded-full bg-white
+      className="w-[285px] px-3 py-2 rounded-full bg-white
       text-black border border-gray-300 shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>

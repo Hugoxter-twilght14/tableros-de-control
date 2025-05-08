@@ -1,7 +1,14 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import { auth } from "../../../../../../auth";
 
 export async function PUT(req: Request, { params }: { params: { codigo: string } }) {
+  const session = await auth(); // 👈 obtiene la sesión
+
+  if (!session?.user?.id) {
+    return new NextResponse("No autorizado", { status: 401 });
+  }
+
   const codigo = parseInt(params.codigo);
   const { tipo, cantidad, nuevaExistencia, nuevasDiferencias } = await req.json();
 
@@ -13,31 +20,25 @@ export async function PUT(req: Request, { params }: { params: { codigo: string }
     existenciaFisica: nuevaExistencia,
     diferencias: nuevasDiferencias,
     movimiento: tipo,
+    cantidadEntrada: tipo === "ENTRADA" ? cantidad : 0,
+    cantidadSalida: tipo === "SALIDA" ? cantidad : 0,
   };
-
-  if (tipo === "ENTRADA") {
-    data.cantidadEntrada = cantidad;
-    data.cantidadSalida = 0;
-  } else {
-    data.cantidadSalida = cantidad;
-    data.cantidadEntrada = 0;
-  }
 
   const updated = await db.refacciones_l3.update({
     where: { codigo },
     data,
   });
 
-  // 🔥 REGISTRAR EN HISTORIAL
   await db.historial_movimientos.create({
     data: {
       codigoRefaccion: updated.codigo,
       descripcion: updated.descripcion,
       noParte: updated.noParte,
       movimiento: tipo,
-      cantidad: cantidad,
+      cantidad,
       existenciaFisicaDespues: nuevaExistencia,
-    }
+      reportadoPorId: Number(session.user.id), // ✅ ahora sí
+    },
   });
 
   return NextResponse.json(updated);
