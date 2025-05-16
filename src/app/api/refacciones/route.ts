@@ -78,17 +78,22 @@ export async function POST(request: Request) {
       }
     })
 
+   
     // Registrar historial
-    await db.historial_movimientos.create({
-      data: {
-        codigoRefaccion: nuevaRefaccion.codigo,
-        descripcion: nuevaRefaccion.descripcion,
-        noParte: nuevaRefaccion.noParte,
-        movimiento: "NUEVO_INGRESO",
-        cantidad: nuevaRefaccion.existenciaFisica,
-        existenciaFisicaDespues: nuevaRefaccion.existenciaFisica
-      }
-    })
+await db.historial_movimientos.create({
+  data: {
+    codigoRefaccion: nuevaRefaccion.codigo,
+    descripcion: nuevaRefaccion.descripcion,
+    noParte: nuevaRefaccion.noParte,
+    movimiento: "NUEVO_INGRESO",
+    cantidad: nuevaRefaccion.existenciaFisica,
+    existenciaFisicaDespues: nuevaRefaccion.existenciaFisica,
+    usuarioReportado: {
+      connect: { id: parsedReportadoPorId }
+    }
+  }
+})
+
 
     console.log("✅ Refacción registrada correctamente:", nuevaRefaccion)
     return NextResponse.json(nuevaRefaccion)
