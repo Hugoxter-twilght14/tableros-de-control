@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react"
 import { Refaccion } from "./TablaRefacciones.types"
+import { ModalEditarRefaccion } from "../ModalEditarRefaccion"
 
 interface Props {
   refrescar?: number
@@ -34,7 +35,8 @@ export function TablaRefacciones({
 }: Props) {
   const [refacciones, setRefacciones] = useState<Refaccion[]>([])
   const [refaccionSeleccionada, setRefaccionSeleccionada] = useState<Pick<Refaccion, "codigo" | "descripcion"> | null>(null)
-  
+  const [ubicaciones, setUbicaciones] = useState([])
+
   const fetchRefacciones = async () => {
     try {
       const { data } = await axios.get("/api/refacciones/get")
@@ -67,6 +69,9 @@ export function TablaRefacciones({
 
   useEffect(() => {
     fetchRefacciones()
+    axios.get("/api/ubicaciones/get")
+      .then(res => setUbicaciones(res.data))
+      .catch(err => console.error("Error al cargar ubicaciones:", err))
   }, [])
 
   useEffect(() => {
@@ -75,7 +80,6 @@ export function TablaRefacciones({
     }
   }, [refrescar])
 
-  // lógica para mostrar datos filtrados
   let datosAMostrar = refacciones
 
   if (busquedaCodigo.trim() !== "" && datosFiltradosCodigo) {
@@ -122,7 +126,7 @@ export function TablaRefacciones({
               </tr>
             )}
 
-            {datosAMostrar.map((item: any) => (
+            {datosAMostrar.map((item) => (
               <tr
                 key={item.codigo}
                 className="border-b bg-[#424242] text-white hover:bg-gray-400 hover:text-black transition"
@@ -142,14 +146,15 @@ export function TablaRefacciones({
                 </td>
                 <td className="p-2">{item.usuarioReportado?.nombre || `ID ${item.reportadoPorId}`}</td>
                 <td className="p-2">{new Date(item.fechaIngreso).toLocaleDateString()}</td>
-                <td className="p-2 text-center">
+                <td className="p-2 text-center flex justify-center gap-2">
+                  {/* Botón eliminar */}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <button
                         onClick={() =>
                           setRefaccionSeleccionada({ codigo: item.codigo, descripcion: item.descripcion })
                         }
-                        className="bg-gradient-to-b from-[#c62828] 80% to-[#9d4245] text-white px-3 py-1 rounded-[5px] hover:bg-red-700 transition"
+                        className="bg-gradient-to-b from-[#c62828] to-[#9d4245] text-white px-3 py-1 rounded-[5px] hover:bg-red-700 transition"
                       >
                         <Trash2 />
                       </button>
@@ -175,6 +180,13 @@ export function TablaRefacciones({
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
+
+                  {/* Botón editar con modal separado */}
+                  <ModalEditarRefaccion
+                    codigo={item.codigo}
+                    ubicaciones={ubicaciones}
+                    onSuccess={() => fetchRefacciones()}
+                  />
                 </td>
               </tr>
             ))}
