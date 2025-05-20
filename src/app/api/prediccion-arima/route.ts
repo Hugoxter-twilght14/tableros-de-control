@@ -12,7 +12,7 @@ export async function GET() {
     const hoy = new Date();
     const currentMonth = hoy.toISOString().slice(0, 7); // formato YYYY-MM
 
-    // Obtener existencias físicas agrupadas por mes de ingreso
+    // Obtener datos históricos acumulados
     const datosMensuales = await db.$queryRawUnsafe<Dato[]>(`
       SELECT
         DATE_FORMAT(fechaIngreso, '%Y-%m') AS mes,
@@ -44,14 +44,38 @@ export async function GET() {
 
     console.log("📤 Enviando a Python (acumulado):", datosAcumulados);
 
+    // Obtener valores reales futuros alineados con la predicción
+    const valoresReales = await db.$queryRawUnsafe<Dato[]>(`
+      SELECT
+        DATE_FORMAT(fechaIngreso, '%Y-%m') AS mes,
+        SUM(existenciaFisica) AS totalExistencias
+      FROM refacciones_l3
+      WHERE DATE_FORMAT(fechaIngreso, '%Y-%m') >= (
+        SELECT DATE_FORMAT(DATE_ADD(MAX(fechaIngreso), INTERVAL 1 MONTH), '%Y-%m')
+        FROM refacciones_l3
+      )
+      GROUP BY mes
+      ORDER BY mes
+      LIMIT 7;
+    `);
+
+    console.log("📤 Valores reales (futuros):", valoresReales);
+
+    const payload = {
+      historico: datosAcumulados,
+      reales: valoresReales,
+    };
+
     const py = spawn("python", ["./python-model/arima_predict.py"]);
-    py.stdin.write(JSON.stringify(datosAcumulados));
+    py.stdin.write(JSON.stringify(payload));
     py.stdin.end();
 
     let resultado = "";
 
     py.stdout.on("data", (data) => {
-      resultado += data.toString();
+      const texto = data.toString();
+      console.log("🐍 Mensaje Python:", texto); // Muestra el porcentaje de efectividad y el JSON
+      resultado += texto;
     });
 
     return await new Promise((resolve, reject) => {

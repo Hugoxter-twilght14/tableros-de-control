@@ -1,19 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-type KPIData = {
-  totalExistencias: number;
-  promedioExistencias: number;
-  existenciasCero: number;
-  existenciasCriticas: number;
-  existenciasBajo10: number;
-};
-
-type MesExistencia = {
-  mes: string;
-  totalMes: number;
-};
-
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
@@ -22,7 +9,7 @@ export async function GET(req: Request) {
     const now = new Date();
     const currentMonth = now.toISOString().slice(0, 7);
 
-    const datosKPI: KPIData[] = await db.$queryRawUnsafe(`
+    const datosKPI: any[] = await db.$queryRawUnsafe(`
       SELECT
         SUM(existenciaFisica) AS totalExistencias,
         AVG(existenciaFisica) AS promedioExistencias,
@@ -52,21 +39,22 @@ export async function GET(req: Request) {
 
     if (filtro) {
       if (/^\d{4}$/.test(filtro)) {
-        // Solo año: 2025
         condicion = `WHERE YEAR(fechaIngreso) = ${filtro}`;
       } else if (/^\d{4}-\d{2}$/.test(filtro)) {
-        // Año y mes exacto: 2025-04
         condicion = `WHERE DATE_FORMAT(fechaIngreso, '%Y-%m') = '${filtro}'`;
       } else if (/^\d{2}$/.test(filtro)) {
-        // Solo mes (todos los años)
         condicion = `WHERE DATE_FORMAT(fechaIngreso, '%m') = '${filtro}'`;
+      } else {
+        condicion = `WHERE codigo = '${filtro}'`;
       }
     }
 
-    const datosHistoricos: MesExistencia[] = await db.$queryRawUnsafe(`
+    const datosHistoricos: any[] = await db.$queryRawUnsafe(`
       SELECT
         DATE_FORMAT(fechaIngreso, '%Y-%m') AS mes,
-        SUM(existenciaFisica) AS totalMes
+        SUM(existenciaFisica) AS totalMes,
+        MAX(codigo) AS codigo,
+        MAX(descripcion) AS descripcion
       FROM refacciones_l3
       ${condicion}
       GROUP BY mes
@@ -76,6 +64,7 @@ export async function GET(req: Request) {
     const etiquetas: string[] = [];
     const valoresAcumulados: number[] = [];
     const valoresPorMes: number[] = [];
+    const meta = [];
     let acumulado = 0;
 
     for (const fila of datosHistoricos) {
@@ -84,6 +73,11 @@ export async function GET(req: Request) {
       etiquetas.push(fila.mes);
       valoresAcumulados.push(acumulado);
       valoresPorMes.push(totalMes);
+      meta.push({
+        existencia: totalMes,
+        codigo: fila.codigo,
+        descripcion: fila.descripcion
+      });
     }
 
     if (!filtro) {
@@ -91,19 +85,22 @@ export async function GET(req: Request) {
       etiquetas.push(currentMonth);
       valoresPorMes.push(valorMesActual);
       valoresAcumulados.push(Number(totalExistencias));
+      meta.push({ existencia: valorMesActual, codigo: 'TOTAL', descripcion: 'Total acumulado' });
     }
 
     const chartDataset = {
       labels: etiquetas,
-      datasets: [{
-        label: "Existencias Totales Acumuladas",
-        data: valoresAcumulados,
-        meta: valoresPorMes,
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-        fill: false,
-      }]
+      datasets: [
+        {
+          label: "Existencias Totales Acumuladas",
+          data: valoresAcumulados,
+          meta,
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+          fill: false
+        }
+      ]
     };
 
     return NextResponse.json({

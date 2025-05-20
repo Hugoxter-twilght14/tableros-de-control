@@ -37,23 +37,24 @@ const DashboardRefacciones = () => {
 
   const fetchData = async () => {
     let query = "";
-        if (filtroMes && filtroAnio) {
-            query = `?filtro=${filtroAnio}-${filtroMes}`;
-        } else if (filtroMes && !filtroAnio) {
-            query = `?filtro=${filtroMes}`;
-        } else if (filtroAnio) {
-            query = `?filtro=${filtroAnio}`;
-        } else if (filtro) {
-            query = `?filtro=${filtro}`;
-        }
-
+    if (filtroMes && filtroAnio) {
+      query = `?filtro=${filtroAnio}-${filtroMes}`;
+    } else if (filtroMes && !filtroAnio) {
+      query = `?filtro=${filtroMes}`;
+    } else if (filtroAnio) {
+      query = `?filtro=${filtroAnio}`;
+    } else if (filtro) {
+      query = `?filtro=${filtro}`;
+    }
 
     const response = await fetch(`/api/dashboard-refacciones${query}`, { cache: "no-store" });
     const data = await response.json();
 
     const enrich = (chart: any) => {
       const dataset = chart.datasets[0];
-      dataset.meta = dataset.meta ?? dataset.data.map(() => null);
+      dataset.meta = dataset.meta?.map((item: any, index: number) =>
+        typeof item === 'object' ? item : { existencia: item }
+      ) ?? dataset.data.map((val: any) => ({ existencia: val }));
       return chart;
     };
 
@@ -87,10 +88,10 @@ const DashboardRefacciones = () => {
             const actual = context.raw;
             const anterior = index > 0 ? dataset.data[index - 1] : 0;
             const cambio = actual - anterior;
-            const tendencia = cambio > 0 ? '⬆ Subió' : cambio < 0 ? '⬇ Bajó' : '➡ Igual';
-            const cantidadMes = dataset.meta?.[index] ?? 'N/A';
+            const tendencia = cambio > 0 ? '⬆️ Subió' : cambio < 0 ? '⬇️ Bajó' : '➡️ Igual';
+            const cantidadMes = dataset.meta?.[index]?.existencia ?? 'N/A';
 
-           return [
+            return [
               `Acumulado: ${actual}`,
               `En el mes: ${cantidadMes}`,
               `Tendencia: ${tendencia}`
@@ -101,10 +102,7 @@ const DashboardRefacciones = () => {
     }
   };
 
-  const meses = [
-    "", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"
-  ];
-
+  const meses = ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
   const anios = ["", "2024", "2025"];
 
   return (
@@ -119,7 +117,7 @@ const DashboardRefacciones = () => {
             🔄 Actualizar ahora
           </button>
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/gestion_almacen")}
             className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700"
           >
             Regresar
@@ -157,7 +155,7 @@ const DashboardRefacciones = () => {
           value={filtroMes}
           onChange={(e) => setFiltroMes(e.target.value)}
         >
-          {meses.map((mes, i) => (
+          {meses.map((mes) => (
             <option key={mes} value={mes}>{mes === "" ? "Mes" : mes}</option>
           ))}
         </select>
@@ -180,6 +178,16 @@ const DashboardRefacciones = () => {
         <div className="w-full lg:w-1/2">
           <Line data={lineChartData} options={tooltipOptions} />
         </div>
+      </div>
+
+      <div className="mt-10 flex justify-center gap-4">
+        <button
+          onClick={() => router.push("/dashboard_refacciones/page2")}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center"
+        >
+          <span>Siguiente</span>
+          <span className="ml-2">➡️</span>
+        </button>
       </div>
     </div>
   );
