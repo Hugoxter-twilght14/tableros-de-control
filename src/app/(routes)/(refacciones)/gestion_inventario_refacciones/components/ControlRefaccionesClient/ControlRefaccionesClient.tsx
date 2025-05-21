@@ -8,6 +8,7 @@ import { ButtonRegresar } from "../ButtonRegresar"
 import { BarraBusquedaRefacciones } from "../BarraBusquedaRefacciones/BarraBusquedaRefacciones"
 import { BarraBusquedaNoParte } from "../BarraBusquedaNoParte/BarraBusquedaNoParte"
 import MovimientoStock from "../MovimientoStock/MovimientoStock"
+import AgregarNuevaUbicacion from "../AgregarNuevaUbicacion/AgregarNuevaRefaccion"
 
 
 export default function ControlRefaccionesClient() {
@@ -72,28 +73,29 @@ export default function ControlRefaccionesClient() {
           </div>
         </div>
 
-        <div className="mt-2 flex justify-center gap-4">
+        <div className="mt-2 flex flex-wrap justify-center gap-4 items-center">
           <ButtonRegresar />
+
+          {/* botón de agregar nueva ubicación */}
+            <AgregarNuevaUbicacion />
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <button  className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500">
+              <button className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500 whitespace-nowrap">
                 Nueva Refacción
               </button>
             </DialogTrigger>
-            <DialogContent className="max-w-6xl w-full !rounded-xl !border-none shadow-xl bg-[#2b2b2b] text-white">
-              <p className="text-2xl font-semibold mb-4 text-center">Registrar Refacción</p>
-              <RefaccionesForm
-                onSuccess={manejarRegistroExitoso}
-              />
-            </DialogContent>
-          </Dialog>
+          <DialogContent className="max-w-6xl w-full !rounded-xl !border-none shadow-xl bg-[#2b2b2b] text-white">
+            <p className="text-2xl font-semibold mb-4 text-center">Registrar Refacción</p>
+            <RefaccionesForm onSuccess={manejarRegistroExitoso} />
+          </DialogContent>
+        </Dialog>
 
-          <div className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500">
-            <MovimientoStock onSuccess={manejarRegistroExitoso} />
-          </div>
+        <div className="whitespace-nowrap text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500 cursor-pointer">
+          <MovimientoStock onSuccess={manejarRegistroExitoso} />
         </div>
       </div>
+    </div>
 
       <div className="px-2 sm:px-4 md:px-6">
         <TablaRefacciones

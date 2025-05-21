@@ -47,7 +47,7 @@ export default function AgregarNuevaUbicacion() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-blue-900 text-white hover:bg-green-600 px-6 py-2 rounded-full text-sm sm:text-base">Agregar ubicación</Button>
+        <Button className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500 whitespace-nowrap">Agregar ubicación</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-[#2b2b2b]">
         <DialogHeader>
@@ -79,7 +79,7 @@ export default function AgregarNuevaUbicacion() {
             required
           />
           <div className="flex justify-end">
-            <Button type="submit" className="bg-[#1e3a5f] text-white hover:bg-green-600 h-10 px-10 rounded-full w-full sm:w-auto">
+            <Button type="submit" className="text-white px-4 py-2 rounded-full text-sm sm:text-base font-semibold bg-[#426689] transition-all duration-200 hover:bg-gradient-to-b hover:from-green-700 hover:to-green-500 whitespace-nowrap">
               Agregar
             </Button>
           </div>
