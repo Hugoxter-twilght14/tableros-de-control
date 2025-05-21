@@ -34,6 +34,10 @@ model usuario {
 
   reportesL3     refacciones_l3[]   @relation("UsuarioReportado")
   movimientosReportados  historial_movimientos[]   @relation("UsuarioReportadoHistorial")
+
+  quimicosAlmacenes     quimicos_almacen[]   @relation("UsuarioReportadoQuimicos")
+  movimientosReportadosQuimicos  historial_movimientos_quimicos[]   @relation("UsuarioReportadoHistorialQuimicos")
+  refaccionesQuimicos     refacciones_quimicos[]   @relation("UsuarioReportadoRefaccionesQuimicos")
 }
 
 model refacciones_l3 {
@@ -97,4 +101,88 @@ model ubicacion {
   fila        String           @db.VarChar(20)
 
   refacciones refacciones_l3[]
+}
+
+model quimicos_almacen{
+  codigo             Int           @id
+  descripcion        String        @db.VarChar(80)
+  noLote            String        @db.VarChar(50)
+  existenciaFisica   Int
+  existenciaSistema  Int
+  diferencias        Int
+  proveedores        String        @db.VarChar(80)
+  cantidadEntrada    Int?
+  cantidadSalida     Int?
+  cantidad           Int?
+  retenidos          Int?
+  fechaIngreso       DateTime
+  fechaVencimiento   DateTime
+  diasVida           Int
+  movimiento         Movimiento
+
+  unidadMedidaId     Unidad_medida
+  
+
+  ubicacionId        Int
+  ubicacion          ubicacion_quimicos     @relation(fields: [ubicacionId], references: [id])
+
+  reportadoPorId     Int
+  usuarioReportadoQuimicos   usuario       @relation("UsuarioReportadoQuimicos", fields: [reportadoPorId], references: [id])
+}
+
+model ubicacion_quimicos{
+  id          Int              @id @default(autoincrement())
+  rack        Int
+  piso      String           @db.VarChar(20)
+
+  quimicos     quimicos_almacen[]
+  
+}
+
+model historial_movimientos_quimicos {
+  id              Int           @id @default(autoincrement())
+  codigoRefaccion Int
+  descripcion     String
+  noLote         String
+  movimiento      Movimiento
+  cantidad        Int
+  existenciaFisicaDespues Int
+
+  reportadoPorId     Int
+  usuarioReportado   usuario       @relation("UsuarioReportadoHistorialQuimicos", fields: [reportadoPorId], references: [id])
+
+  fechaMovimiento DateTime      @default(now())
+}
+
+model refacciones_quimicos {
+  codigo             Int           @id
+  descripcion        String        @db.VarChar(80)
+  noParte            String        @db.VarChar(50)
+  existenciaFisica   Int
+  existenciaSistema  Int
+  diferencias        Int
+  proveedores        String        @db.VarChar(80)
+  cantidadEntrada    Int?
+  cantidadSalida     Int?
+  cantidad           Int?
+  fechaIngreso       DateTime
+  movimiento         Movimiento
+
+  unidadMedidaId     Unidad_medida
+  
+
+  ubicacionId        Int
+  ubicacion          ubicacion_refacciones_quimicos     @relation(fields: [ubicacionId], references: [id])
+
+  reportadoPorId     Int
+  usuarioReportado   usuario       @relation("UsuarioReportadoRefaccionesQuimicos", fields: [reportadoPorId], references: [id])
+}
+
+model ubicacion_refacciones_quimicos{
+  id          Int              @id @default(autoincrement())
+  rack        Int
+  piso      String           @db.VarChar(20)
+
+  quimicos     refacciones_quimicos[]
+  
 }

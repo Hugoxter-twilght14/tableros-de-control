@@ -29,6 +29,6 @@
   "**/*.tsx",
   ".next/types/**/*.ts",
   "types/next-auth.d.ts"
-],
+, "src/app/(routes)/(quimicos)/gestion_inventario_quimicos/components/AgregarNuevaUbicacion/AgregarNuevaQuimicos.tsx"],
   "exclude": ["node_modules"]
 }
