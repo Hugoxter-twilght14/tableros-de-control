@@ -100,7 +100,7 @@ export function TablaQuimicos({
             <tr>
               <th className="p-3 text-left">Código</th>
               <th className="p-3 text-left">Descripción</th>
-              <th className="p-3 text-left">No. Parte</th>
+              <th className="p-3 text-left">No. Lote</th>
               <th className="p-3 text-left">Exist. Fís.</th>
               <th className="p-3 text-left">Exist. Sist.</th>
               <th className="p-3 text-left">Diferencias</th>
