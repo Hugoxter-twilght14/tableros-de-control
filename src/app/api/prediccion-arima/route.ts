@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
+import path from "path";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -8,9 +9,24 @@ type Dato = {
   totalExistencias: number;
 };
 
+// Detecta si 'python3' o 'python' está disponible
+function findPythonCmd(): string {
+  const cmds = ["python3", "python"];
+  for (const cmd of cmds) {
+    const result = spawnSync(cmd, ["--version"]);
+    if (!result.error) return cmd;
+  }
+  throw new Error("No se encontró Python en el PATH");
+}
+
 function runPythonScript(payload: any): Promise<Response> {
   return new Promise((resolve, reject) => {
-    const py = spawn("python", ["./python-model/arima_predict.py"]);
+    const pythonCmd = findPythonCmd();
+
+    // Ruta absoluta al script Python (modifica si tu carpeta difiere)
+    const scriptPath = path.resolve(process.cwd(), "python-model", "arima_predict.py");
+
+    const py = spawn(pythonCmd, [scriptPath]);
 
     py.stdin.write(JSON.stringify(payload));
     py.stdin.end();
