@@ -58,13 +58,13 @@ export async function GET(): Promise<Response> {
     const hoy = new Date();
     const currentMonth = hoy.toISOString().slice(0, 7); // formato YYYY-MM
 
-    // Obtener datos históricos acumulados
+    // Obtener datos históricos acumulados (PostgreSQL)
     const datosMensuales = await db.$queryRawUnsafe<Dato[]>(`
       SELECT
-        DATE_FORMAT(fechaIngreso, '%Y-%m') AS mes,
-        SUM(existenciaFisica) AS totalExistencias
+        to_char("fechaIngreso", 'YYYY-MM') AS mes,
+        SUM("existenciaFisica") AS "totalExistencias"
       FROM refacciones_l3
-      WHERE DATE_FORMAT(fechaIngreso, '%Y-%m') < '${currentMonth}'
+      WHERE to_char("fechaIngreso", 'YYYY-MM') < '${currentMonth}'
       GROUP BY mes
       ORDER BY mes;
     `);
@@ -89,14 +89,14 @@ export async function GET(): Promise<Response> {
       });
     }
 
-    // Obtener valores reales futuros alineados con la predicción
+    // Obtener valores reales futuros alineados con la predicción (PostgreSQL)
     const valoresReales = await db.$queryRawUnsafe<Dato[]>(`
       SELECT
-        DATE_FORMAT(fechaIngreso, '%Y-%m') AS mes,
-        SUM(existenciaFisica) AS totalExistencias
+        to_char("fechaIngreso", 'YYYY-MM') AS mes,
+        SUM("existenciaFisica") AS "totalExistencias"
       FROM refacciones_l3
-      WHERE DATE_FORMAT(fechaIngreso, '%Y-%m') >= (
-        SELECT DATE_FORMAT(DATE_ADD(MAX(fechaIngreso), INTERVAL 1 MONTH), '%Y-%m')
+      WHERE to_char("fechaIngreso", 'YYYY-MM') >= (
+        SELECT to_char(MAX("fechaIngreso") + interval '1 month', 'YYYY-MM')
         FROM refacciones_l3
       )
       GROUP BY mes
