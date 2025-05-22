@@ -2,21 +2,22 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const filtro = url.searchParams.get("filtro");
 
     const now = new Date();
-    const currentMonth = now.toISOString().slice(0, 7);
+    const currentMonth = now.toISOString().slice(0, 7); // 'YYYY-MM'
 
     const datosKPI: any[] = await db.$queryRawUnsafe(`
       SELECT
-        SUM(existenciaFisica) AS totalExistencias,
-        AVG(existenciaFisica) AS promedioExistencias,
-        SUM(CASE WHEN existenciaFisica = 0 THEN 1 ELSE 0 END) AS existenciasCero,
-        SUM(CASE WHEN existenciaFisica BETWEEN 1 AND 5 THEN 1 ELSE 0 END) AS existenciasCriticas,
-        COUNT(CASE WHEN existenciaFisica < 10 THEN 1 ELSE NULL END) AS existenciasBajo10
+        SUM("existenciaFisica") AS "totalExistencias",
+        AVG("existenciaFisica") AS "promedioExistencias",
+        SUM(CASE WHEN "existenciaFisica" = 0 THEN 1 ELSE 0 END) AS "existenciasCero",
+        SUM(CASE WHEN "existenciaFisica" BETWEEN 1 AND 5 THEN 1 ELSE 0 END) AS "existenciasCriticas",
+        COUNT(CASE WHEN "existenciaFisica" < 10 THEN 1 ELSE NULL END) AS "existenciasBajo10"
       FROM refacciones_l3;
     `);
 
@@ -36,25 +37,26 @@ export async function GET(req: Request) {
       existenciasBajo10: Number(existenciasBajo10) ?? 0
     };
 
-    let condicion = `WHERE DATE_FORMAT(fechaIngreso, '%Y-%m') < '${currentMonth}'`;
+    // Construcción de condición para filtro con sintaxis PostgreSQL
+    let condicion = `WHERE to_char("fechaIngreso", 'YYYY-MM') < '${currentMonth}'`;
 
     if (filtro) {
       if (/^\d{4}$/.test(filtro)) {
-        condicion = `WHERE YEAR(fechaIngreso) = ${filtro}`;
+        condicion = `WHERE EXTRACT(YEAR FROM "fechaIngreso") = ${filtro}`;
       } else if (/^\d{4}-\d{2}$/.test(filtro)) {
-        condicion = `WHERE DATE_FORMAT(fechaIngreso, '%Y-%m') = '${filtro}'`;
+        condicion = `WHERE to_char("fechaIngreso", 'YYYY-MM') = '${filtro}'`;
       } else if (/^\d{2}$/.test(filtro)) {
-        condicion = `WHERE DATE_FORMAT(fechaIngreso, '%m') = '${filtro}'`;
+        condicion = `WHERE to_char("fechaIngreso", 'MM') = '${filtro}'`;
       } else {
-        condicion = `WHERE codigo = '${filtro}'`;
+        condicion = `WHERE "codigo" = '${filtro}'`;
       }
     }
 
     const datosHistoricos: any[] = await db.$queryRawUnsafe(`
       SELECT
-        DATE_FORMAT(fechaIngreso, '%Y-%m') AS mes,
-        SUM(existenciaFisica) AS totalMes,
-        MAX(codigo) AS codigo,
+        to_char("fechaIngreso", 'YYYY-MM') AS mes,
+        SUM("existenciaFisica") AS "totalMes",
+        MAX("codigo") AS codigo,
         MAX(descripcion) AS descripcion
       FROM refacciones_l3
       ${condicion}
