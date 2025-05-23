@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { spawn, spawnSync } from "child_process";
-import path from "path";
+import { spawn } from "child_process";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -9,24 +8,9 @@ type Dato = {
   totalExistencias: number;
 };
 
-// Detecta si 'python3' o 'python' está disponible
-function findPythonCmd(): string {
-  const cmds = ["python3", "python"];
-  for (const cmd of cmds) {
-    const result = spawnSync(cmd, ["--version"]);
-    if (!result.error) return cmd;
-  }
-  throw new Error("No se encontró Python en el PATH");
-}
-
 function runPythonScript(payload: any): Promise<Response> {
   return new Promise((resolve, reject) => {
-    const pythonCmd = findPythonCmd();
-
-    // Ruta absoluta al script Python (modifica si tu carpeta difiere)
-    const scriptPath = path.resolve(process.cwd(), "python-model", "arima_predict.py");
-
-    const py = spawn(pythonCmd, [scriptPath]);
+    const py = spawn("python", ["./python-model/arima_predict.py"]);
 
     py.stdin.write(JSON.stringify(payload));
     py.stdin.end();
@@ -74,13 +58,13 @@ export async function GET(): Promise<Response> {
     const hoy = new Date();
     const currentMonth = hoy.toISOString().slice(0, 7); // formato YYYY-MM
 
-    // Obtener datos históricos acumulados (PostgreSQL)
+    // Obtener datos históricos acumulados
     const datosMensuales = await db.$queryRawUnsafe<Dato[]>(`
       SELECT
-        to_char("fechaIngreso", 'YYYY-MM') AS mes,
+        DATE_FORMAT("fechaIngreso", '%Y-%m') AS mes,
         SUM("existenciaFisica") AS "totalExistencias"
       FROM refacciones_l3
-      WHERE to_char("fechaIngreso", 'YYYY-MM') < '${currentMonth}'
+      WHERE DATE_FORMAT("fechaIngreso", '%Y-%m') < '${currentMonth}'
       GROUP BY mes
       ORDER BY mes;
     `);
@@ -105,14 +89,14 @@ export async function GET(): Promise<Response> {
       });
     }
 
-    // Obtener valores reales futuros alineados con la predicción (PostgreSQL)
+    // Obtener valores reales futuros alineados con la predicción
     const valoresReales = await db.$queryRawUnsafe<Dato[]>(`
       SELECT
-        to_char("fechaIngreso", 'YYYY-MM') AS mes,
-        SUM("existenciaFisica") AS "totalExistencias"
+        DATE_FORMAT("fechaIngreso", '%Y-%m') AS mes,
+        SUM("existenciaFisica") AS totalExistencias
       FROM refacciones_l3
-      WHERE to_char("fechaIngreso", 'YYYY-MM') >= (
-        SELECT to_char(MAX("fechaIngreso") + interval '1 month', 'YYYY-MM')
+      WHERE DATE_FORMAT("fechaIngreso", '%Y-%m') >= (
+        SELECT DATE_FORMAT(DATE_ADD(MAX("fechaIngreso"), INTERVAL 1 MONTH), '%Y-%m')
         FROM refacciones_l3
       )
       GROUP BY mes
